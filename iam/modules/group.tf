@@ -6,7 +6,7 @@
 module "iam_group_aws_admins" {
   # remote module 
   source = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
-  name = "AWSAdmins"
+  name   = "AWSAdmins"
   group_users = [
     module.iam_user_admin.this_iam_user_name,
   ]
@@ -18,7 +18,7 @@ module "iam_group_aws_admins" {
 module "iam_group_developers" {
   # remote module 
   source = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
-  name = "Developers"
+  name   = "Developers"
   group_users = [
   ]
   custom_group_policy_arns = [
@@ -31,7 +31,7 @@ module "iam_group_developers" {
 module "iam_group_serverless_backend_developers" {
   # remote module 
   source = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
-  name = "ServerlessBackendDevelopers"
+  name   = "ServerlessBackendDevelopers"
   group_users = [
   ]
   custom_group_policy_arns = [
@@ -50,7 +50,7 @@ module "iam_group_serverless_backend_developers" {
 module "iam_group_serverless_frontend_developers" {
   # remote module 
   source = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
-  name = "ServerlessFrontendDevelopers"
+  name   = "ServerlessFrontendDevelopers"
   group_users = [
   ]
   custom_group_policy_arns = [
