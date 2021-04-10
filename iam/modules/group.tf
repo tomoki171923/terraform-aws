@@ -59,6 +59,7 @@ module "iam_group_serverless_frontend_developers" {
     "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess",
     "arn:aws:iam::aws:policy/CloudFrontFullAccess",
     "arn:aws:iam::aws:policy/AmazonDynamoDBReadOnlyAccess",
-    "arn:aws:iam::aws:policy/AWSLambda_ReadOnlyAccess"
+    "arn:aws:iam::aws:policy/AWSLambda_ReadOnlyAccess",
+    module.policy_apigateway_read.arn
   ]
 }
