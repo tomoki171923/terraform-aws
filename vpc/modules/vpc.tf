@@ -5,10 +5,10 @@
 
 module "vpc" {
   # remote module 
-  source = "terraform-aws-modules/vpc/aws"
+  source     = "terraform-aws-modules/vpc/aws"
   create_vpc = true
-  name = "${var.vpc_name}-vpc"
-  cidr = "10.100.0.0/16"
+  name       = "${var.vpc_name}-vpc"
+  cidr       = "10.100.0.0/16"
 
   azs             = ["ap-northeast-1a", "ap-northeast-1c", "ap-northeast-1d"]
   public_subnets  = ["10.100.1.0/24", "10.100.2.0/24"]

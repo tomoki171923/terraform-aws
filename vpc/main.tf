@@ -1,4 +1,4 @@
 module "vpc" {
-  source = "./modules"
+  source   = "./modules"
   vpc_name = var.vpc_name
 }
