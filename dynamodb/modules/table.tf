@@ -9,9 +9,9 @@ resource "aws_dynamodb_table" "saviola-table" {
   read_capacity  = 25
   write_capacity = 25
   # partition key
-  hash_key       = "weeks"
+  hash_key = "weeks"
   # sort key
-  range_key      = "id"
+  range_key = "id"
 
   attribute {
     name = "weeks"
@@ -75,12 +75,12 @@ resource "aws_dynamodb_table" "saviola-table" {
 }
 
 resource "aws_dynamodb_table" "nuancebook-table" {
-  name           = "Nuancebook"
-  billing_mode   = "PAY_PER_REQUEST"
+  name         = "Nuancebook"
+  billing_mode = "PAY_PER_REQUEST"
   # partition key
-  hash_key       = "jword"
+  hash_key = "jword"
   # sort key
-  range_key      = "eword"
+  range_key = "eword"
 
   attribute {
     name = "jword"
