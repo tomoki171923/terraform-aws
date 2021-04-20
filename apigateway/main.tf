@@ -1,0 +1,3 @@
+module "apigateway" {
+  source = "./modules"
+}
