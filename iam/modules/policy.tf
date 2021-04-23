@@ -11,18 +11,6 @@ module "policy_apigateway_read" {
   path        = "/"
   description = "apigateway read"
 
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "VisualEditor0",
-            "Effect": "Allow",
-            "Action": "apigateway:GET",
-            "Resource": "*"
-        }
-    ]
-}
-EOF
+  policy = data.template_file.policy_apigateway_read.rendered
 }
 
