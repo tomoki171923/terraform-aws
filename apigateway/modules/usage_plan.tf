@@ -14,12 +14,12 @@ resource "aws_api_gateway_usage_plan" "sample_free" {
   #product_code = "MYCODE"
 
   api_stages {
-    api_id = "cgmdk568o0" # TODO:
+    api_id = data.aws_api_gateway_rest_api.sample.id
     stage  = var.stage_name.develop
   }
 
   api_stages {
-    api_id = "cgmdk568o0" # TODO:
+    api_id = data.aws_api_gateway_rest_api.sample.id
     stage  = var.stage_name.staging
   }
 
@@ -40,7 +40,7 @@ resource "aws_api_gateway_usage_plan" "sample_basic" {
   #product_code = "MYCODE"
 
   api_stages {
-    api_id = "cgmdk568o0" # TODO:
+    api_id = data.aws_api_gateway_rest_api.sample.id
     stage  = var.stage_name.production
   }
 
@@ -61,7 +61,7 @@ resource "aws_api_gateway_usage_plan" "sample_flex" {
   #product_code = "MYCODE"
 
   api_stages {
-    api_id = "cgmdk568o0" # TODO:
+    api_id = data.aws_api_gateway_rest_api.sample.id
     stage  = var.stage_name.production
   }
 
@@ -82,7 +82,7 @@ resource "aws_api_gateway_usage_plan" "sample_premium" {
   #product_code = "MYCODE"
 
   api_stages {
-    api_id = "cgmdk568o0" # TODO:
+    api_id = data.aws_api_gateway_rest_api.sample.id
     stage  = var.stage_name.production
   }
 
