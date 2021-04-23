@@ -1,14 +1,13 @@
 variable "api_name" {
   default = {
-    sample  = "sample"
-    saviola = "saviola"
+    sample = "sample"
   }
 }
 
 variable "stage_name" {
   default = {
-    develop    = "dev"
-    staging    = "st"
-    production = "pro"
+    development = "dev"
+    staging     = "st"
+    production  = "pro"
   }
 }
