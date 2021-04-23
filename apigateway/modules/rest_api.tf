@@ -2,58 +2,26 @@
 # REST API on API Gateway
 # ref: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_rest_api
 #      https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_stage
+#      https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission
 # ********************************* #
+
 /*
-
-resource "aws_api_gateway_rest_api" "sample" {
-  name = var.api_name.sample
-  body = data.template_file.sample-dev-oas30-apigateway.rendered
-}
-
-resource "aws_api_gateway_rest_api" "${var.api_name.sample}" {
-  body = jsonencode({
-    openapi = "3.0.1"
-    info = {
-      title   = "example"
-      version = "1.0"
-    }
-    paths = {
-      "/path1" = {
-        get = {
-          x-amazon-apigateway-integration = {
-            httpMethod           = "GET"
-            payloadFormatVersion = "1.0"
-            type                 = "HTTP_PROXY"
-            uri                  = "https://ip-ranges.amazonaws.com/ip-ranges.json"
-          }
-        }
-      }
-    }
-  })
-
-  name = "example"
-}
+    sample api
 */
 
-#resource "aws_lambda_permission" "lambda_permission" {
-#  statement_id  = "Allow_hello_world_MyDemoAPIInvoke"
-#  action        = "lambda:InvokeFunction"
-#  function_name = "hello_world"
-#  principal     = "apigateway.amazonaws.com"
+resource "aws_api_gateway_rest_api" "sample" {
+  name = "sample"
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
+  body = data.template_file.sample-oas30-apigateway.rendered
+}
 
-  # The /*/*/* part allows invocation from any stage, method and resource path
-  # within API Gateway REST API.
-#  source_arn = "${aws_api_gateway_rest_api.sample.execution_arn}/*/*/*"
-#}
-
-/*
-aws lambda add-permission  --function-name '{function_name}'  --source-arn '{source_arn}'  --principal apigateway.amazonaws.com  --statement-id {statement_id}  --action lambda:InvokeFunction  --output yaml"
-
-resource "aws_api_gateway_deployment" "example" {
-  rest_api_id = aws_api_gateway_rest_api.example.id
+resource "aws_api_gateway_deployment" "sample" {
+  rest_api_id = aws_api_gateway_rest_api.sample.id
 
   triggers = {
-    redeployment = sha1(jsonencode(aws_api_gateway_rest_api.example.body))
+    redeployment = sha1(jsonencode(aws_api_gateway_rest_api.sample.body))
   }
 
   lifecycle {
@@ -61,16 +29,57 @@ resource "aws_api_gateway_deployment" "example" {
   }
 }
 
-resource "aws_api_gateway_stage" "development" {
-  deployment_id = aws_api_gateway_deployment.example.id
-  rest_api_id   = aws_api_gateway_rest_api.example.id
-  stage_name    = "development"
+resource "aws_api_gateway_stage" "sample_dev" {
+  deployment_id = aws_api_gateway_deployment.sample.id
+  rest_api_id   = aws_api_gateway_rest_api.sample.id
+  stage_name    = var.stage_name.development
 }
 
-resource "aws_api_gateway_stage" "production" {
-  deployment_id = aws_api_gateway_deployment.example.id
-  rest_api_id   = aws_api_gateway_rest_api.example.id
-  stage_name    = "production"
+resource "aws_api_gateway_stage" "sample_st" {
+  deployment_id = aws_api_gateway_deployment.sample.id
+  rest_api_id   = aws_api_gateway_rest_api.sample.id
+  stage_name    = var.stage_name.staging
 }
 
-*/
+resource "aws_api_gateway_stage" "sample_pro" {
+  deployment_id = aws_api_gateway_deployment.sample.id
+  rest_api_id   = aws_api_gateway_rest_api.sample.id
+  stage_name    = var.stage_name.production
+}
+
+
+resource "aws_lambda_permission" "sample_api_hellow_world_dev" {
+  statement_id  = "allow_${aws_api_gateway_rest_api.sample.name}_api_to_invoke_${data.aws_lambda_function.hello_world.function_name}_${data.aws_lambda_alias.hello_world_dev.name}"
+  action        = "lambda:InvokeFunction"
+  function_name = data.aws_lambda_function.hello_world.function_name
+  qualifier     = data.aws_lambda_alias.hello_world_dev.name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.sample.execution_arn}/*/GET/hello-world"
+  depends_on = [
+    aws_api_gateway_stage.sample_dev
+  ]
+}
+
+resource "aws_lambda_permission" "sample_api_hellow_world_st" {
+  statement_id  = "allow_${aws_api_gateway_rest_api.sample.name}_api_to_invoke_${data.aws_lambda_function.hello_world.function_name}_${data.aws_lambda_alias.hello_world_st.name}"
+  action        = "lambda:InvokeFunction"
+  function_name = data.aws_lambda_function.hello_world.function_name
+  qualifier     = data.aws_lambda_alias.hello_world_st.name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.sample.execution_arn}/*/GET/hello-world"
+  depends_on = [
+    aws_api_gateway_stage.sample_st
+  ]
+}
+
+resource "aws_lambda_permission" "sample_api_hellow_world_pro" {
+  statement_id  = "allow_${aws_api_gateway_rest_api.sample.name}_api_to_invoke_${data.aws_lambda_function.hello_world.function_name}_${data.aws_lambda_alias.hello_world_pro.name}"
+  action        = "lambda:InvokeFunction"
+  function_name = data.aws_lambda_function.hello_world.function_name
+  qualifier     = data.aws_lambda_alias.hello_world_pro.name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.sample.execution_arn}/*/GET/hello-world"
+  depends_on = [
+    aws_api_gateway_stage.sample_pro
+  ]
+}
