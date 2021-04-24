@@ -33,6 +33,7 @@ data "template_file" "sample-oas30-apigateway" {
   template = file("${path.module}/oas30/sample-oas30-apigateway.yaml")
 
   vars = {
+    #TODO: ここのstage 変数が効いていない
     integration_url = "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/${data.aws_lambda_function.hello_world.arn}:$${stageVariables.alias}/invocations"
   }
 }

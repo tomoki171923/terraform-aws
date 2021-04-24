@@ -47,27 +47,24 @@ resource "aws_api_gateway_stage" "sample_pro" {
   stage_name    = var.stage_name.production
 }
 
-resource "aws_lambda_permission" "sample_api_hellow_world_dev" {
-  statement_id = "allow_${aws_api_gateway_rest_api.sample.name}API_to_invoke_${data.aws_lambda_function.hello_world.function_name}_${data.aws_lambda_alias.hello_world_dev.name}"
-  action       = "lambda:InvokeFunction"
-  # TODO:
-  function_name = data.aws_lambda_alias.hello_world_dev.arn
-  #function_name = "${data.aws_lambda_function.hello_world.function_name}:${aws_api_gateway_stage.sample_dev.stage_name}"
-  principal = "apigateway.amazonaws.com"
 
-  # The /*/*/* part allows invocation from any stage, method and resource path
-  # within API Gateway REST API.
-  # "arn:aws:execute-api:{self.region}:{self.aws_account}:{api_id}/*/{method}/{func['resource_name']}"
-  source_arn = "${aws_api_gateway_rest_api.sample.execution_arn}/*/GET/hello-world"
+resource "aws_lambda_permission" "sample_api_hellow_world_dev" {
+  statement_id  = "allow_${aws_api_gateway_rest_api.sample.name}_api_to_invoke_${data.aws_lambda_function.hello_world.function_name}_${data.aws_lambda_alias.hello_world_dev.name}"
+  action        = "lambda:InvokeFunction"
+  function_name = data.aws_lambda_function.hello_world.function_name
+  qualifier     = data.aws_lambda_alias.hello_world_dev.name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.sample.execution_arn}/*/GET/hello-world"
   depends_on = [
     aws_api_gateway_stage.sample_dev
   ]
 }
 
 resource "aws_lambda_permission" "sample_api_hellow_world_st" {
-  statement_id  = "allow_${aws_api_gateway_rest_api.sample.name}API_to_invoke_${data.aws_lambda_function.hello_world.function_name}_${data.aws_lambda_alias.hello_world_st.name}"
+  statement_id  = "allow_${aws_api_gateway_rest_api.sample.name}_api_to_invoke_${data.aws_lambda_function.hello_world.function_name}_${data.aws_lambda_alias.hello_world_st.name}"
   action        = "lambda:InvokeFunction"
-  function_name = data.aws_lambda_alias.hello_world_st.arn
+  function_name = data.aws_lambda_function.hello_world.function_name
+  qualifier     = data.aws_lambda_alias.hello_world_st.name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_api_gateway_rest_api.sample.execution_arn}/*/GET/hello-world"
   depends_on = [
@@ -76,9 +73,10 @@ resource "aws_lambda_permission" "sample_api_hellow_world_st" {
 }
 
 resource "aws_lambda_permission" "sample_api_hellow_world_pro" {
-  statement_id  = "allow_${aws_api_gateway_rest_api.sample.name}API_to_invoke_${data.aws_lambda_function.hello_world.function_name}_${data.aws_lambda_alias.hello_world_pro.name}"
+  statement_id  = "allow_${aws_api_gateway_rest_api.sample.name}_api_to_invoke_${data.aws_lambda_function.hello_world.function_name}_${data.aws_lambda_alias.hello_world_pro.name}"
   action        = "lambda:InvokeFunction"
-  function_name = data.aws_lambda_alias.hello_world_pro.arn
+  function_name = data.aws_lambda_function.hello_world.function_name
+  qualifier     = data.aws_lambda_alias.hello_world_pro.name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_api_gateway_rest_api.sample.execution_arn}/*/GET/hello-world"
   depends_on = [
