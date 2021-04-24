@@ -9,18 +9,18 @@
 */
 
 resource "aws_api_gateway_usage_plan" "sample_free" {
-  name        = "${var.api_name.sample}-free"
-  description = "${var.api_name.sample} API 開発・テスト環境用使用プラン"
+  name        = "${aws_api_gateway_rest_api.sample.name}-free"
+  description = "${aws_api_gateway_rest_api.sample.name} API 開発・テスト環境用使用プラン"
   #product_code = "MYCODE"
 
   api_stages {
-    api_id = data.aws_api_gateway_rest_api.sample.id
-    stage  = var.stage_name.develop
+    api_id = aws_api_gateway_rest_api.sample.id
+    stage  = aws_api_gateway_stage.sample_dev.stage_name
   }
 
   api_stages {
-    api_id = data.aws_api_gateway_rest_api.sample.id
-    stage  = var.stage_name.staging
+    api_id = aws_api_gateway_rest_api.sample.id
+    stage  = aws_api_gateway_stage.sample_st.stage_name
   }
 
   throttle_settings {
@@ -35,13 +35,13 @@ resource "aws_api_gateway_usage_plan" "sample_free" {
 }
 
 resource "aws_api_gateway_usage_plan" "sample_basic" {
-  name        = "${var.api_name.sample}-basic"
-  description = "${var.api_name.sample} API 本番環境用使用プラン(Basic)"
+  name        = "${aws_api_gateway_rest_api.sample.name}-basic"
+  description = "${aws_api_gateway_rest_api.sample.name} API 本番環境用使用プラン(Basic)"
   #product_code = "MYCODE"
 
   api_stages {
-    api_id = data.aws_api_gateway_rest_api.sample.id
-    stage  = var.stage_name.production
+    api_id = aws_api_gateway_rest_api.sample.id
+    stage  = aws_api_gateway_stage.sample_pro.stage_name
   }
 
   throttle_settings {
@@ -56,13 +56,13 @@ resource "aws_api_gateway_usage_plan" "sample_basic" {
 }
 
 resource "aws_api_gateway_usage_plan" "sample_flex" {
-  name        = "${var.api_name.sample}-flex"
-  description = "${var.api_name.sample} API 本番環境用使用プラン(Flex)"
+  name        = "${aws_api_gateway_rest_api.sample.name}-flex"
+  description = "${aws_api_gateway_rest_api.sample.name} API 本番環境用使用プラン(Flex)"
   #product_code = "MYCODE"
 
   api_stages {
-    api_id = data.aws_api_gateway_rest_api.sample.id
-    stage  = var.stage_name.production
+    api_id = aws_api_gateway_rest_api.sample.id
+    stage  = aws_api_gateway_stage.sample_pro.stage_name
   }
 
   throttle_settings {
@@ -77,13 +77,13 @@ resource "aws_api_gateway_usage_plan" "sample_flex" {
 }
 
 resource "aws_api_gateway_usage_plan" "sample_premium" {
-  name        = "${var.api_name.sample}-premium"
-  description = "${var.api_name.sample} API 本番環境用使用プラン(Premium)"
+  name        = "${aws_api_gateway_rest_api.sample.name}-premium"
+  description = "${aws_api_gateway_rest_api.sample.name} API 本番環境用使用プラン(Premium)"
   #product_code = "MYCODE"
 
   api_stages {
-    api_id = data.aws_api_gateway_rest_api.sample.id
-    stage  = var.stage_name.production
+    api_id = aws_api_gateway_rest_api.sample.id
+    stage  = aws_api_gateway_stage.sample_pro.stage_name
   }
 
   throttle_settings {
