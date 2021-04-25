@@ -3,7 +3,7 @@
 # ref: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table
 # ********************************* #
 
-resource "aws_dynamodb_table" "saviola-table" {
+resource "aws_dynamodb_table" "saviola" {
   name           = "Saviola"
   billing_mode   = "PROVISIONED"
   read_capacity  = 25
@@ -74,7 +74,7 @@ resource "aws_dynamodb_table" "saviola-table" {
   }
 }
 
-resource "aws_dynamodb_table" "nuancebook-table" {
+resource "aws_dynamodb_table" "nuancebook" {
   name         = "Nuancebook"
   billing_mode = "PAY_PER_REQUEST"
   # partition key
