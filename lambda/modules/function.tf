@@ -54,21 +54,23 @@ module "alias_hello_world_dev" {
 }
 
 module "alias_hello_world_st" {
-  source           = "terraform-aws-modules/lambda/aws//modules/alias"
-  create           = true
-  refresh_alias    = false
-  name             = "st"
-  function_name    = module.function_hello_world.this_lambda_function_name
+  source        = "terraform-aws-modules/lambda/aws//modules/alias"
+  create        = true
+  refresh_alias = false
+  name          = "st"
+  function_name = module.function_hello_world.this_lambda_function_name
+  # please comment out to the first time only.
   function_version = var.alias == "st" ? module.function_hello_world.this_lambda_function_version : data.aws_lambda_alias.hello_world_st.function_version
-  #function_version = module.function_hello_world.this_lambda_function_version
+  #function_version = module.function_hello_world.this_lambda_function_version # first time only
 }
 
 module "alias_hello_world_pro" {
-  source           = "terraform-aws-modules/lambda/aws//modules/alias"
-  create           = true
-  refresh_alias    = false
-  name             = "pro"
-  function_name    = module.function_hello_world.this_lambda_function_name
+  source        = "terraform-aws-modules/lambda/aws//modules/alias"
+  create        = true
+  refresh_alias = false
+  name          = "pro"
+  function_name = module.function_hello_world.this_lambda_function_name
+  # please comment out to the first time only.
   function_version = var.alias == "pro" ? module.function_hello_world.this_lambda_function_version : data.aws_lambda_alias.hello_world_pro.function_version
-  #function_version = module.function_hello_world.this_lambda_function_version
+  #function_version = module.function_hello_world.this_lambda_function_version # first time only
 }
