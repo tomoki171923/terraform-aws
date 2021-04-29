@@ -61,7 +61,7 @@ module "role_lambda_invoke" {
 
   custom_role_policy_arns = [
     var.aws_default_policies.AWSLambdaExecute,
-    var.aws_default_policies.service-role/AWSLambdaRole
+    var.aws_default_policies.AWSLambdaRole
   ]
 }
 
