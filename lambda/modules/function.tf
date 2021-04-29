@@ -2,10 +2,9 @@
 # Lambda Function
 # ref: https://github.com/terraform-aws-modules/terraform-aws-lambda
 #    : https://github.com/terraform-aws-modules/terraform-aws-lambda/blob/master/examples/build-package/main.tf
+#    : https://github.com/terraform-aws-modules/terraform-aws-lambda/blob/master/examples/alias/main.tf
 # ********************************* #
 
-
-# TODO: alias
 module "function_hello_world" {
   source = "terraform-aws-modules/lambda/aws"
 
@@ -43,4 +42,33 @@ module "function_hello_world" {
   tags = {
     Terraform = "true"
   }
+}
+
+module "alias_hello_world_dev" {
+  source           = "terraform-aws-modules/lambda/aws//modules/alias"
+  create           = true
+  refresh_alias    = false
+  name             = "dev"
+  function_name    = module.function_hello_world.this_lambda_function_name
+  function_version = "$LATEST"
+}
+
+module "alias_hello_world_st" {
+  source           = "terraform-aws-modules/lambda/aws//modules/alias"
+  create           = true
+  refresh_alias    = false
+  name             = "st"
+  function_name    = module.function_hello_world.this_lambda_function_name
+  function_version = var.alias == "st" ? module.function_hello_world.this_lambda_function_version : data.aws_lambda_alias.hello_world_st.function_version
+  #function_version = module.function_hello_world.this_lambda_function_version
+}
+
+module "alias_hello_world_pro" {
+  source           = "terraform-aws-modules/lambda/aws//modules/alias"
+  create           = true
+  refresh_alias    = false
+  name             = "pro"
+  function_name    = module.function_hello_world.this_lambda_function_name
+  function_version = var.alias == "pro" ? module.function_hello_world.this_lambda_function_version : data.aws_lambda_alias.hello_world_pro.function_version
+  #function_version = module.function_hello_world.this_lambda_function_version
 }
