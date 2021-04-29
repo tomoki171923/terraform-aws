@@ -43,7 +43,7 @@ module "role_lambda_execute" {
   role_requires_mfa = false
 
   custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/AWSLambdaExecute"
+    var.aws_default_policies.AWSLambdaExecute
   ]
 }
 
@@ -60,8 +60,8 @@ module "role_lambda_invoke" {
   role_requires_mfa = false
 
   custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/AWSLambdaExecute",
-    "arn:aws:iam::aws:policy/service-role/AWSLambdaRole"
+    var.aws_default_policies.AWSLambdaExecute,
+    var.aws_default_policies.AWSLambdaRole
   ]
 }
 
@@ -78,8 +78,8 @@ module "role_lambda_execute_dynamodb_admin" {
   role_requires_mfa = false
 
   custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/AWSLambdaExecute",
-    "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+    var.aws_default_policies.AWSLambdaExecute,
+    var.aws_default_policies.AmazonDynamoDBFullAccess
   ]
 }
 
@@ -96,8 +96,8 @@ module "role_lambda_execute_dynamodb_read" {
   role_requires_mfa = false
 
   custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/AWSLambdaExecute",
-    "arn:aws:iam::aws:policy/AmazonDynamoDBReadOnlyAccess"
+    var.aws_default_policies.AWSLambdaExecute,
+    var.aws_default_policies.AmazonDynamoDBReadOnlyAccess
   ]
 }
 
@@ -114,8 +114,8 @@ module "role_lambda_execute_cloudwatch_admin" {
   role_requires_mfa = false
 
   custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/AWSLambdaExecute",
-    "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+    var.aws_default_policies.AWSLambdaExecute,
+    var.aws_default_policies.CloudWatchLogsFullAccess
   ]
 }
 
@@ -132,8 +132,8 @@ module "role_lambda_execute_s3_admin" {
   role_requires_mfa = false
 
   custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/AWSLambdaExecute",
-    "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+    var.aws_default_policies.AWSLambdaExecute,
+    var.aws_default_policies.AmazonS3FullAccess
   ]
 }
 
@@ -150,8 +150,8 @@ module "role_lambda_execute_s3_read" {
   role_requires_mfa = false
 
   custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/AWSLambdaExecute",
-    "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+    var.aws_default_policies.AWSLambdaExecute,
+    var.aws_default_policies.AmazonS3ReadOnlyAccess
   ]
 }
 
@@ -168,8 +168,8 @@ module "role_lambda_execute_dynamodb_admin_s3_admin" {
   role_requires_mfa = false
 
   custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/AWSLambdaExecute",
-    "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-    "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+    var.aws_default_policies.AWSLambdaExecute,
+    var.aws_default_policies.AmazonDynamoDBFullAccess,
+    var.aws_default_policies.AmazonS3FullAccess
   ]
 }

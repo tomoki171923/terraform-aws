@@ -11,7 +11,7 @@ module "iam_group_aws_admins" {
     module.iam_user_admin.this_iam_user_name,
   ]
   custom_group_policy_arns = [
-    "arn:aws:iam::aws:policy/AdministratorAccess",
+    var.aws_default_policies.AdministratorAccess,
   ]
 }
 
@@ -22,8 +22,8 @@ module "iam_group_developers" {
   group_users = [
   ]
   custom_group_policy_arns = [
-    "arn:aws:iam::aws:policy/IAMUserChangePassword",
-    "arn:aws:iam::aws:policy/AWSSupportAccess"
+    var.aws_default_policies.IAMUserChangePassword,
+    var.aws_default_policies.AWSSupportAccess
   ]
 }
 
@@ -35,15 +35,15 @@ module "iam_group_serverless_backend_developers" {
   group_users = [
   ]
   custom_group_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonSQSFullAccess",
-    "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
-    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-    "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-    "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-    "arn:aws:iam::aws:policy/CloudFrontFullAccess",
-    "arn:aws:iam::aws:policy/AWSDataPipeline_FullAccess",
-    "arn:aws:iam::aws:policy/AmazonSESFullAccess",
-    "arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator"
+    var.aws_default_policies.AmazonSQSFullAccess,
+    var.aws_default_policies.AWSLambda_FullAccess,
+    var.aws_default_policies.AmazonS3FullAccess,
+    var.aws_default_policies.CloudWatchFullAccess,
+    var.aws_default_policies.AmazonDynamoDBFullAccess,
+    var.aws_default_policies.CloudFrontFullAccess,
+    var.aws_default_policies.AWSDataPipeline_FullAccess,
+    var.aws_default_policies.AmazonSESFullAccess,
+    var.aws_default_policies.AmazonAPIGatewayAdministrator
   ]
 }
 
@@ -54,12 +54,12 @@ module "iam_group_serverless_frontend_developers" {
   group_users = [
   ]
   custom_group_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-    "arn:aws:iam::aws:policy/CloudWatchEventsReadOnlyAccess",
-    "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess",
-    "arn:aws:iam::aws:policy/CloudFrontFullAccess",
-    "arn:aws:iam::aws:policy/AmazonDynamoDBReadOnlyAccess",
-    "arn:aws:iam::aws:policy/AWSLambda_ReadOnlyAccess",
+    var.aws_default_policies.AmazonS3FullAccess,
+    var.aws_default_policies.CloudWatchEventsReadOnlyAccess,
+    var.aws_default_policies.CloudWatchReadOnlyAccess,
+    var.aws_default_policies.CloudFrontFullAccess,
+    var.aws_default_policies.AmazonDynamoDBReadOnlyAccess,
+    var.aws_default_policies.AWSLambda_ReadOnlyAccess,
     module.policy_apigateway_read.arn
   ]
 }
