@@ -8,9 +8,10 @@ output "group" {
 }
 
 output "user" {
+  sensitive = true
   value = {
-    admin = module.iam_user_admin 
-    }
+    admin = module.iam_user_admin
+  }
 }
 
 output "role" {
