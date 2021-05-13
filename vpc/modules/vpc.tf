@@ -29,20 +29,23 @@ module "vpc" {
   # dynamodb endpoint
   #enable_dynamodb_endpoint = true
 
-  public_subnet_tags = {
-    Name = "${var.vpc_name}-public-subnet"
-  }
+  # Default security group - ingress/egress rules cleared to deny all
+  manage_default_security_group  = true
+  default_security_group_ingress = []
+  default_security_group_egress  = []
 
-  private_subnet_tags = {
-    Name = "${var.vpc_name}-private-subnet"
-  }
-
+  # tag
   tags = {
     Terraform   = "true"
     Environment = "dev"
   }
-
   vpc_tags = {
     Name = "${var.vpc_name}-vpc"
+  }
+  public_subnet_tags = {
+    Name = "${var.vpc_name}-public-subnet"
+  }
+  private_subnet_tags = {
+    Name = "${var.vpc_name}-private-subnet"
   }
 }
