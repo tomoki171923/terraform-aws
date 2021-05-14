@@ -18,6 +18,10 @@ module "vpc" {
   #intra_subnets       = ["10.100.41.0/24", "10.100.42.0/24"]
   enable_ipv6 = false
 
+  # dns
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+
   # nat gateway
   enable_nat_gateway     = true
   single_nat_gateway     = true

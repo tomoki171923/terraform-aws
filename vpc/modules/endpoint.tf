@@ -2,17 +2,16 @@
 # vpc endpoint
 # ref: https://github.com/terraform-aws-modules/terraform-aws-vpc/blob/master/examples/complete-vpc/main.tf
 # ********************************* #
-/*
+
 module "endpoints" {
   source = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
 
   vpc_id             = module.vpc.vpc_id
-  security_group_ids = [module.vpc.private_subnets]
+  security_group_ids = [aws_security_group.public.id]
 
   endpoints = {
     s3 = {
       service             = "s3"
-      private_dns_enabled = true
       tags                = { Name = "s3-vpc-endpoint" }
     },
     ec2 = {
@@ -26,6 +25,18 @@ module "endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags                = { Name = "ec2messages-vpc-endpoint" }
+    },
+    ssm = {
+      service             = "ssm"
+      private_dns_enabled = true
+      subnet_ids          = module.vpc.private_subnets
+      tags                = { Name = "ssm-vpc-endpoint" }
+    },
+    ssmmessages = {
+      service             = "ssmmessages"
+      private_dns_enabled = true
+      subnet_ids          = module.vpc.private_subnets
+      tags                = { Name = "ssmmessages-vpc-endpoint" }
     },
     logs = {
       service             = "logs"
@@ -46,4 +57,3 @@ module "endpoints" {
     Environment = "dev"
   }
 }
-*/
