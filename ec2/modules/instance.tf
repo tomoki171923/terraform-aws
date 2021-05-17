@@ -15,7 +15,7 @@ resource "aws_instance" "sample-single" {
   #user_data # TODO
 
   tags = {
-    Name = "sample-single"
+    Name        = "sample-single"
     Terraform   = "true"
     Environment = "dev"
   }
