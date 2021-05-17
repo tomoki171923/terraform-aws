@@ -24,7 +24,7 @@ resource "aws_security_group" "public" {
   }
 
   tags = {
-    Name = "${var.vpc_name}-public-sg"
+    Name        = "${var.vpc_name}-public-sg"
     Terraform   = "true"
     Environment = "dev"
   }
@@ -45,10 +45,10 @@ resource "aws_security_group" "private" {
   }
 
   ingress {
-    description = "rails"
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "tcp"
+    description     = "rails"
+    from_port       = 3000
+    to_port         = 3000
+    protocol        = "tcp"
     security_groups = [aws_security_group.web.id]
     #ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
   }
@@ -62,7 +62,7 @@ resource "aws_security_group" "private" {
   }
 
   tags = {
-    Name = "${var.vpc_name}-private-sg"
+    Name        = "${var.vpc_name}-private-sg"
     Terraform   = "true"
     Environment = "dev"
   }
@@ -100,7 +100,7 @@ resource "aws_security_group" "web" {
   }
 
   tags = {
-    Name = "${var.vpc_name}-web-sg"
+    Name        = "${var.vpc_name}-web-sg"
     Terraform   = "true"
     Environment = "dev"
   }
@@ -129,7 +129,7 @@ resource "aws_security_group" "redis" {
   }
 
   tags = {
-    Name = "${var.vpc_name}-redis-sg"
+    Name        = "${var.vpc_name}-redis-sg"
     Terraform   = "true"
     Environment = "dev"
   }

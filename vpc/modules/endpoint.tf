@@ -11,8 +11,8 @@ module "endpoints" {
 
   endpoints = {
     s3 = {
-      service             = "s3"
-      tags                = { Name = "s3-vpc-endpoint" }
+      service = "s3"
+      tags    = { Name = "s3-vpc-endpoint" }
     },
     ec2 = {
       service             = "ec2"
