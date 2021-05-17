@@ -2,14 +2,11 @@ data "aws_iam_role" "LambdaExecute" {
   name = "LambdaExecute"
 }
 
-# please comment out to the first time only.
-data "aws_lambda_alias" "hello_world_st" {
-  function_name = "hello_world"
-  name          = "st"
-}
-
-# please comment out to the first time only.
-data "aws_lambda_alias" "hello_world_pro" {
-  function_name = "hello_world"
-  name          = "pro"
+data "terraform_remote_state" "this" {
+  backend = "s3"
+  config = {
+    bucket = "infra-develop-terraform"
+    key    = "lambda/ap-northeast-1/terraform.tfstate"
+    region = "ap-northeast-1"
+  }
 }
