@@ -16,6 +16,7 @@ resource "random_string" "this" {
   length = 2
 }
 
+# upload s3 objects to s3 backets.
 resource "null_resource" "upload_objects" {
   # exec command each time we exec `terraform apply`
   triggers = {
@@ -25,7 +26,7 @@ resource "null_resource" "upload_objects" {
     on_failure  = fail
     command = <<EOF
 aws s3 rm s3://${local.target_bauckt_id}/ --recursive
-aws s3 cp ${local.objects_root_path} s3://${local.target_bauckt_id}/ --recursive --acl public-read 
+aws s3 cp ${local.objectsyes_root_path} s3://${local.target_bauckt_id}/ --recursive --acl public-read 
 EOF
   }
   provisioner "local-exec" {
