@@ -6,8 +6,8 @@
 # ********************************* #
 
 locals {
-  target_bauckt_id  = module.tf-test-hosting-bucket.s3_bucket_id
-  objects_root_path = "${path.module}/objects"
+  target_bauckt_id   = module.tf-test-hosting-bucket.s3_bucket_id
+  objects_root_path  = "${path.module}/objects"
   target_bauckt_id2  = module.tf-test-hosting-cloudfront-bucket.s3_bucket_id
   objects_root_path2 = "${path.module}/objects"
 }
@@ -23,15 +23,15 @@ resource "null_resource" "upload_objects" {
     value = random_string.this.result
   }
   provisioner "local-exec" {
-    on_failure  = fail
-    command = <<EOF
+    on_failure = fail
+    command    = <<EOF
 aws s3 rm s3://${local.target_bauckt_id}/ --recursive
 aws s3 cp ${local.objectsyes_root_path} s3://${local.target_bauckt_id}/ --recursive --acl public-read 
 EOF
   }
   provisioner "local-exec" {
-    on_failure  = fail
-    command = <<EOF
+    on_failure = fail
+    command    = <<EOF
 aws s3 rm s3://${local.target_bauckt_id2}/ --recursive
 aws s3 cp ${local.objects_root_path2} s3://${local.target_bauckt_id2}/ --recursive
 EOF
