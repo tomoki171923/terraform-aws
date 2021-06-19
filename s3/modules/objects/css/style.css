@@ -10,6 +10,16 @@
   padding-top: 50px;
   overflow: auto;
 }
+
+.error {
+  padding-top: 50px;
+  overflow: auto;
+  background-color: darkred;
+}
+
+.error h1 {
+  color: white;
+}
  
 .footer {
   position: fixed;
