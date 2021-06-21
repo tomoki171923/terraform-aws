@@ -1,5 +1,3 @@
 output "route53" {
-  value = {
-    route53 = module.route53
-  }
+  value = module.route53
 }

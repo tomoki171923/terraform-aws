@@ -6,9 +6,9 @@
 # ********************************* #
 
 locals {
-  objects_root_path  = "${path.module}/objects"
-  target_bauckt_id   = module.tf-test-hosting-bucket.s3_bucket_id
-  target_bauckt_id2  = module.tf-test-hosting-cloudfront-bucket.s3_bucket_id
+  objects_root_path = "${path.module}/objects"
+  target_bauckt_id  = module.tf-test-hosting-bucket.s3_bucket_id
+  target_bauckt_id2 = module.tf-test-hosting-cloudfront-bucket.s3_bucket_id
 }
 
 # upload s3 objects to s3 backets.

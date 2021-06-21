@@ -1,6 +1,6 @@
 output "zone" {
   value = {
-    main = aws_route53_zone.main
+    main    = aws_route53_zone.main
     sub-dev = aws_route53_zone.sub-dev
   }
 }

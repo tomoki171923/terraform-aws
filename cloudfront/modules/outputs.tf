@@ -1,5 +1,8 @@
 output "distribution" {
-  value = aws_cloudfront_distribution.s3_distribution
+  value = {
+    s3_distribution                 = aws_cloudfront_distribution.s3_distribution
+    s3_distribution_with_own_domain = aws_cloudfront_distribution.s3_distribution_with_own_domain
+  }
 }
 
 output "origin_access_identity" {
