@@ -10,3 +10,7 @@ output "record" {
     dev-ns = aws_route53_record.dev-ns
   }
 }
+
+output "local" {
+value = local.acm_state
+ }

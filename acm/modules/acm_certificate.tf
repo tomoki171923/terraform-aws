@@ -11,7 +11,7 @@ resource "aws_acm_certificate" "cert" {
   domain_name       = "*.${local.domain_name}"
   validation_method = "DNS"
   tags = {
-    Name = "${local.domain_name}-Certificate"
+    Name = "Certificate-${local.domain_name}"
     Terraform   = "true"
     Environment = "dev"
   }
