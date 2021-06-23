@@ -5,7 +5,7 @@
 
 locals {
   cloudfront_state = data.terraform_remote_state.cloudfront.outputs.cloudfront
-  acm_state = data.terraform_remote_state.acm.outputs.acm.certificate
+  acm_state        = data.terraform_remote_state.acm.outputs.acm.certificate
 }
 
 
@@ -49,7 +49,7 @@ resource "aws_route53_record" "cert_validation" {
   zone_id         = aws_route53_zone.main.zone_id
 }
 
-resource "aws_acm_certificate_validation" "ecs_domain_certificate_validation" {
+resource "aws_acm_certificate_validation" "domain_certificate_validation" {
   certificate_arn         = local.acm_state.arn
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
 }

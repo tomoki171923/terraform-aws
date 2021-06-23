@@ -7,10 +7,11 @@ output "zone" {
 
 output "record" {
   value = {
-    dev-ns = aws_route53_record.dev-ns
+    dev-ns          = aws_route53_record.dev-ns
+    cert_validation = aws_route53_record.cert_validation
   }
 }
 
-output "local" {
-value = local.acm_state
- }
+output "certificate_validation" {
+  value = aws_acm_certificate_validation.domain_certificate_validation
+}
