@@ -8,6 +8,7 @@ output "zone" {
 output "record" {
   value = {
     dev-ns          = aws_route53_record.dev-ns
+    main-a          = aws_route53_record.main-a
     cert_validation = aws_route53_record.cert_validation
   }
 }

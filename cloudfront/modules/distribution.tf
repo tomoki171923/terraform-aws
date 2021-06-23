@@ -8,7 +8,7 @@
 locals {
   s3_origin_id   = "S3-${data.aws_s3_bucket.selected.id}"
   my_domain_name = "mydomain12345.net"
-  acm_state = data.terraform_remote_state.acm.outputs.acm
+  acm_state      = data.terraform_remote_state.acm.outputs.acm
 }
 
 #️ ------------------------
