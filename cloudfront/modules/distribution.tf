@@ -185,8 +185,8 @@ resource "aws_cloudfront_distribution" "s3_distribution_with_own_domain" {
 
   viewer_certificate {
     cloudfront_default_certificate = false
-    acm_certificate_arn            = local.acm_state.certificate.arn
-    minimum_protocol_version       = "TLSv1.2_2019"
+    acm_certificate_arn            = local.acm_state.certificate.main.arn
+    minimum_protocol_version       = "TLSv1"
     ssl_support_method             = "sni-only"
   }
 }
