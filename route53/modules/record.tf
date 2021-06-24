@@ -5,7 +5,7 @@
 
 locals {
   cloudfront_state = data.terraform_remote_state.cloudfront.outputs.cloudfront
-  acm_state        = data.terraform_remote_state.acm.outputs.acm.certificate
+  acm_state        = data.terraform_remote_state.acm.outputs.acm.certificate.main
 }
 
 
