@@ -1,14 +1,3 @@
-locals {
-  base_name             = "ecs-test"
-  region                = "ap-northeast-1"
-  vpc_cidr              = "10.0.0.0/16"
-  public_subnet_1_cidr  = "10.0.1.0/24"
-  public_subnet_2_cidr  = "10.0.2.0/24"
-  private_subnet_1_cidr = "10.0.3.0/24"
-  private_subnet_2_cidr = "10.0.4.0/24"
-}
-
-
 resource "aws_vpc" "ecs-test-vpc" {
   cidr_block           = local.vpc_cidr
   enable_dns_hostnames = true

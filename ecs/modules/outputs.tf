@@ -1,5 +1,5 @@
 
-output "vpc" {
+output "_vpc" {
   value = {
     ecs-test-vpc                = aws_vpc.ecs-test-vpc
     public-subnet-1             = aws_subnet.public-subnet-1
@@ -18,5 +18,13 @@ output "vpc" {
     igw                         = aws_internet_gateway.igw
     public-internet-igw-route   = aws_route.public-internet-igw-route
 
+  }
+}
+
+
+output "_security_group" {
+  value = {
+    ecs_security_group     = aws_security_group.ecs_security_group
+    ecs_alb_security_group = aws_security_group.ecs_alb_security_group
   }
 }
