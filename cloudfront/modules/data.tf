@@ -22,3 +22,12 @@ data "aws_iam_policy_document" "s3_policy" {
     }
   }
 }
+
+data "terraform_remote_state" "acm" {
+  backend = "s3"
+  config = {
+    bucket = "infra-develop-terraform"
+    key    = "acm/us-east-1/terraform.tfstate"
+    region = "ap-northeast-1"
+  }
+}

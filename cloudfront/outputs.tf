@@ -1,5 +1,3 @@
 output "cloudfront" {
-  value = {
-    cloudfront = module.cloudfront
-  }
+  value = module.cloudfront
 }
