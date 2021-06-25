@@ -8,7 +8,9 @@ locals {
   acm_state        = data.terraform_remote_state.acm.outputs.acm.certificate.main
 }
 
-
+/*
+  sub domain NS record
+*/
 resource "aws_route53_record" "dev-ns" {
   zone_id = aws_route53_zone.main.zone_id
   name    = aws_route53_zone.sub-dev.name
@@ -17,6 +19,9 @@ resource "aws_route53_record" "dev-ns" {
   records = aws_route53_zone.sub-dev.name_servers
 }
 
+/*
+  main domain A record to cloudfront
+*/
 resource "aws_route53_record" "main-a" {
   zone_id = aws_route53_zone.main.zone_id
   name    = aws_route53_zone.main.name

@@ -28,3 +28,19 @@ output "_security_group" {
     ecs_alb_security_group = aws_security_group.ecs_alb_security_group
   }
 }
+
+
+output "_iam" {
+  value = {
+    ecs_cluster_role   = aws_iam_role.ecs_cluster_role
+    ecs_cluster_policy = aws_iam_role_policy.ecs_cluster_policy
+  }
+}
+
+output "ecs" {
+  value = {
+    ecs_cluster     = aws_ecs_cluster.ecs-test-cluster
+    ecs_cluster_alb = aws_alb.ecs_cluster_alb
+
+  }
+}
