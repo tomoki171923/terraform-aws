@@ -46,33 +46,33 @@
 
 
 
-# name: 'Terraform'
-# 
-# on:
-#   push:
-#     branches:
-#     - main
-#     - dev
-#   pull_request:
-#     branches:
-#     - dev
-# 
-# jobs:
-#   terraform:
-#     name: 'Terraform'
-#     runs-on: ubuntu-latest
-#     environment: production
-# 
-#     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-#     defaults:
-#       run:
-#         shell: bash
-# 
-#     steps:
-#     # Checkout the repository to the GitHub Actions runner
-#     - name: Checkout
-#       uses: actions/checkout@v2
-#         
+name: 'Terraform'
+
+on:
+  push:
+    branches:
+    - main
+    - dev
+  pull_request:
+    branches:
+    - dev
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+      
 #     # Set AWS credentials
 #     - name: Configure AWS credentials
 #       uses: aws-actions/configure-aws-credentials@v1
