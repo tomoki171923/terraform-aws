@@ -1,6 +1,6 @@
 # terraform
 
-This repository is the AWS Infrastructure as Code by Terraform.
+This repository is the AWS Infrastructure as Code by Terraform. These are all samples.
 
 
 ### Procedure
