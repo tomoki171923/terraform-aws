@@ -75,4 +75,8 @@ data "aws_security_groups" "sample-private-sg" {
     Name = "sample-private-sg"
   }
 }
-
+data "aws_security_groups" "sample-web-sg" {
+  tags = {
+    Name = "sample-web-sg"
+  }
+}
