@@ -14,7 +14,7 @@ resource "aws_lb" "alb" {
   load_balancer_type = "application"
   security_groups    = data.aws_security_groups.sample-web-sg.ids
   subnets            = data.aws_subnet_ids.sample-public-subnet.ids
-  ip_address_type = "ipv4"
+  ip_address_type    = "ipv4"
   tags = {
     Name        = "sample-single"
     Terraform   = "true"
@@ -65,15 +65,15 @@ resource "aws_lb_target_group" "tg" {
   port     = 3000
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.sample.id
-  health_check{
-      enabled = "true"
-      healthy_threshold = "5"
-      interval = "30"
-      matcher = "200"
-      path = "/api/v1/healthcheck"
-      port = "traffic-port"
-      protocol = "HTTP"
-      timeout = "29"
-      unhealthy_threshold = "2"
+  health_check {
+    enabled             = "true"
+    healthy_threshold   = "5"
+    interval            = "30"
+    matcher             = "200"
+    path                = "/api/v1/healthcheck"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    timeout             = "29"
+    unhealthy_threshold = "2"
   }
 }

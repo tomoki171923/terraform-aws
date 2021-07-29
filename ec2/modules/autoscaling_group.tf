@@ -44,18 +44,18 @@ resource "aws_autoscaling_group" "asg" {
   tags = concat(
     [
       {
-        "key"        = "Name"
-        "value"   = "sample-cluster"
+        "key"                 = "Name"
+        "value"               = "sample-cluster"
         "propagate_at_launch" = true
       },
       {
-        "key"        = "Terraform"
-        "value"   = "true"
+        "key"                 = "Terraform"
+        "value"               = "true"
         "propagate_at_launch" = true
       },
       {
-        "key"        = "Environment"
-        "value"   = "dev"
+        "key"                 = "Environment"
+        "value"               = "dev"
         "propagate_at_launch" = true
       }
     ]
