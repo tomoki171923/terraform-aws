@@ -134,3 +134,32 @@ resource "aws_security_group" "redis" {
     Environment = "dev"
   }
 }
+
+resource "aws_security_group" "postgres" {
+  name        = "${var.vpc_name}-postgres-sg"
+  description = "Allow postgres inbound traffic"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    description = "postgres"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    #ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name        = "${var.vpc_name}-postgres-sg"
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
