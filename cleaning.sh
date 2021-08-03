@@ -17,5 +17,5 @@ MODULES=(
 for module in "${MODULES[@]}" ; do
     cd ${BASE_PATH}/${module}
     pwd
-    terraform destroy -aoto-approve
+    terraform destroy -auto-approve
 done
