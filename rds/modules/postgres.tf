@@ -15,11 +15,11 @@ module "postgres" {
   major_engine_version = "13"         # DB option group
 
   # instance resource size
-  instance_class        = "db.t3.micro"
-  allocated_storage     = 5
+  instance_class    = "db.t3.micro"
+  allocated_storage = 5
   #max_allocated_storage = 8
-  storage_encrypted     = false
-  storage_type          = "gp2" # gp2:SSD, io1:IOPS SSD
+  storage_encrypted = false
+  storage_type      = "gp2" # gp2:SSD, io1:IOPS SSD
 
   # NOTE: Do NOT use 'user' as the value for 'username' as it throws:
   # "Error creating DB Instance: InvalidParameterValue: MasterUsername
@@ -38,8 +38,8 @@ module "postgres" {
   enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
 
   #backup_retention_period = 0
-  skip_final_snapshot     = true # false is recommended
-  deletion_protection     = false
+  skip_final_snapshot = true # false is recommended
+  deletion_protection = false
 
   #performance_insights_enabled          = true
   #performance_insights_retention_period = 7
