@@ -1,0 +1,3 @@
+module "cloudwatch" {
+  source = "./modules"
+}
