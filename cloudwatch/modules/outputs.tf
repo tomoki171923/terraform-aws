@@ -1,6 +1,6 @@
 output "event" {
   value = {
-    hello_world   = module.hello_world_event
+    hello_world = module.hello_world_event
   }
 }
 

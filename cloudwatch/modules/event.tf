@@ -22,7 +22,7 @@ module "hello_world_event" {
   description         = "Invoking lambda ${data.aws_lambda_alias.hello_world_dev.function_name} function"
   schedule_expression = each.value.schedule_expression
   tags = {
-    Terraform    = "true"
+    Terraform = "true"
   }
   input                = <<DOC
 {
