@@ -8,7 +8,7 @@ locals {
   acm_state        = data.terraform_remote_state.acm.outputs.acm.certificate.main
 }
 
-
+/*
 resource "aws_route53_record" "dev-ns" {
   zone_id = aws_route53_zone.main.zone_id
   name    = aws_route53_zone.sub-dev.name
@@ -16,6 +16,7 @@ resource "aws_route53_record" "dev-ns" {
   ttl     = "30"
   records = aws_route53_zone.sub-dev.name_servers
 }
+*/
 
 resource "aws_route53_record" "main-a" {
   zone_id = aws_route53_zone.main.zone_id

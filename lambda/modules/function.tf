@@ -9,6 +9,18 @@ locals {
   this_state           = data.terraform_remote_state.this
   function_version_st  = local.this_state.outputs == {} ? module.function_hello_world.lambda_function_version : local.this_state.outputs.lambda.function.hello_world.alias.st.lambda_alias_function_version
   function_version_pro = local.this_state.outputs == {} ? module.function_hello_world.lambda_function_version : local.this_state.outputs.lambda.function.hello_world.alias.pro.lambda_alias_function_version
+
+  alias_hello_world = {
+    dev = {
+      function_version = "$LATEST"
+    }
+    st = {
+      function_version = var.alias == "st" ? module.function_hello_world.lambda_function_version : local.function_version_st
+    }
+    pro = {
+      function_version = var.alias == "pro" ? module.function_hello_world.lambda_function_version : local.function_version_pro
+    }
+  }
 }
 
 module "function_hello_world" {
@@ -50,29 +62,12 @@ module "function_hello_world" {
   }
 }
 
-module "alias_hello_world_dev" {
+module "alias_hello_world" {
+  for_each         = local.alias_hello_world
   source           = "terraform-aws-modules/lambda/aws//modules/alias"
   create           = true
   refresh_alias    = false
-  name             = "dev"
+  name             = each.key
   function_name    = module.function_hello_world.lambda_function_name
-  function_version = "$LATEST"
-}
-
-module "alias_hello_world_st" {
-  source           = "terraform-aws-modules/lambda/aws//modules/alias"
-  create           = true
-  refresh_alias    = false
-  name             = "st"
-  function_name    = module.function_hello_world.lambda_function_name
-  function_version = var.alias == "st" ? module.function_hello_world.lambda_function_version : local.function_version_st
-}
-
-module "alias_hello_world_pro" {
-  source           = "terraform-aws-modules/lambda/aws//modules/alias"
-  create           = true
-  refresh_alias    = false
-  name             = "pro"
-  function_name    = module.function_hello_world.lambda_function_name
-  function_version = var.alias == "pro" ? module.function_hello_world.lambda_function_version : local.function_version_pro
+  function_version = each.value.function_version
 }

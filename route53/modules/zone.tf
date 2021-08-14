@@ -12,6 +12,7 @@ resource "aws_route53_zone" "main" {
   }
 }
 
+/*
 resource "aws_route53_zone" "sub-dev" {
   name = "dev.${var.domain_name}"
   tags = {
@@ -19,3 +20,4 @@ resource "aws_route53_zone" "sub-dev" {
     Environment = "dev"
   }
 }
+*/
