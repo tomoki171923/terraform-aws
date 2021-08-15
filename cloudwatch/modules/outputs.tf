@@ -5,3 +5,8 @@ output "event" {
 }
 
 
+output "alarm" {
+  value = {
+    hello_world_dev_error = aws_cloudwatch_metric_alarm.lambda_hello_world_dev_error
+  }
+}
