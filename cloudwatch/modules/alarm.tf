@@ -24,7 +24,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_hello_world_dev_error" {
     Resource     = "${local.lambda_function_name}:${local.lambda_alias_name}"
   }
   tags = {
-    Terraform = "true"
+    Terraform   = "true"
     Environment = "dev"
   }
 }
