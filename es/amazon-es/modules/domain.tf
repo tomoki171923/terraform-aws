@@ -64,7 +64,7 @@ CONFIG
   }
 
   encrypt_at_rest {
-      enabled = true
+    enabled = true
   }
 
   tags = {
