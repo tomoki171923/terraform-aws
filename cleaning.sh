@@ -7,6 +7,7 @@ MODULES=(
     "rds"
     "dynamodb"
     "elasticache"
+    "es/amazon-es"
     "ec2"
     "lambda"
     "apigateway"
