@@ -19,6 +19,10 @@ resource "aws_elasticsearch_domain" "sample" {
   domain_endpoint_options {
     enforce_https       = true
     tls_security_policy = "Policy-Min-TLS-1-2-2019-07"
+    # if custum domain setting
+    # custum_endpoint_enabled = true
+    # custum_endpoint = "es.mydomain12345.net"
+    # custum_endpoint_certificate_arn = "ACM ARN"
   }
 
   ebs_options {
@@ -72,3 +76,15 @@ CONFIG
     Environment = "dev"
   }
 }
+
+
+# if custum domain setting (e.g. es.mydomain12345.net)
+
+resource "aws_route53_record" "es_mydomain12345_net_CNAME" {
+  zone_id = local.route53_state.main.zone_id
+  name    = "es"
+  type    = "CNAME"
+  ttl    = 30
+  records = [aws_elasticsearch_domain.sample.endpoint]
+}
+
