@@ -2,14 +2,7 @@
 # CloudFront
 # ref: https://github.com/terraform-aws-modules/terraform-aws-cloudfront
 #      https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution
-#      https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate
 # ********************************* #
-
-locals {
-  s3_origin_id   = "S3-${data.aws_s3_bucket.selected.id}"
-  my_domain_name = "mydomain12345.net"
-  acm_state      = data.terraform_remote_state.acm.outputs.acm
-}
 
 #️ ------------------------
 # s3 distribution with cloudfront domain
@@ -116,7 +109,7 @@ resource "aws_cloudfront_distribution" "s3_distribution_with_own_domain" {
   retain_on_delete    = false
   wait_for_deployment = false
   default_root_object = "index.html"
-  aliases             = [local.my_domain_name]
+  aliases             = [local.alias]
 
   origin {
     domain_name = data.aws_s3_bucket.selected.bucket_regional_domain_name
@@ -185,7 +178,7 @@ resource "aws_cloudfront_distribution" "s3_distribution_with_own_domain" {
 
   viewer_certificate {
     cloudfront_default_certificate = false
-    acm_certificate_arn            = local.acm_state.certificate.main.arn
+    acm_certificate_arn            = local.acm_arn
     minimum_protocol_version       = "TLSv1"
     ssl_support_method             = "sni-only"
   }
