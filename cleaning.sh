@@ -7,6 +7,7 @@ MODULES=(
     "rds"
     "dynamodb"
     "elasticache"
+    "kinesis/ap-northeast-1"
     "es/amazon-es"
     "ec2"
     "lambda"

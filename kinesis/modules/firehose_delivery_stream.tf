@@ -30,8 +30,8 @@ resource "aws_kinesis_firehose_delivery_stream" "dist_es" {
 
   s3_configuration {
     role_arn           = aws_iam_role.firehose.arn #TODO: 
-    bucket_arn         = aws_s3_bucket.bucket.arn  #TODO: 
-    prefix             = "${each.value.index_name}/"
+    bucket_arn         = local.s3_state.bucket.tf-test-private-bucket.s3_bucket_arn
+    prefix             = "firehose/${each.value.index_name}/"
     buffer_size        = each.value.buffer_size
     buffer_interval    = each.value.buffer_interval
     compression_format = "GZIP"

@@ -20,9 +20,9 @@ resource "aws_elasticsearch_domain" "sample" {
     enforce_https       = true
     tls_security_policy = "Policy-Min-TLS-1-2-2019-07"
     # if custum domain setting
-    # custum_endpoint_enabled = true
-    # custum_endpoint = "es.mydomain12345.net"
-    # custum_endpoint_certificate_arn = "ACM ARN"
+    custom_endpoint_enabled         = true
+    custom_endpoint                 = "es.mydomain12345.net"
+    custom_endpoint_certificate_arn = local.acm_state.certificate.sub.arn
   }
 
   ebs_options {
@@ -40,19 +40,7 @@ resource "aws_elasticsearch_domain" "sample" {
     automated_snapshot_start_hour = 10
   }
 
-  access_policies = <<CONFIG
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": "es:*",
-            "Principal": "*",
-            "Effect": "Allow",
-            "Resource": "arn:aws:es:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${var.domain_name}/*"
-        }
-    ]
-}
-CONFIG
+  access_policies = data.template_file.access_policiy_es.rendered
 
   advanced_options = {
     "rest.action.multi.allow_explicit_index" = true
@@ -77,14 +65,4 @@ CONFIG
   }
 }
 
-
-# if custum domain setting (e.g. es.mydomain12345.net)
-
-resource "aws_route53_record" "es_mydomain12345_net_CNAME" {
-  zone_id = local.route53_state.main.zone_id
-  name    = "es"
-  type    = "CNAME"
-  ttl    = 30
-  records = [aws_elasticsearch_domain.sample.endpoint]
-}
 
