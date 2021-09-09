@@ -12,9 +12,10 @@ MODULES=(
     "lambda"
     "apigateway"
     "vpc"
-    "cloudfront"
-    "route53"
-    "acm"
+    #"cloudfront/ap-northeast-1"
+    #"route53"
+    #"acm/ap-northeast-1"
+    #"acm/us-east-1"
 )
 
 # destroy all modules

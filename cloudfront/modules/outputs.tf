@@ -12,3 +12,12 @@ output "origin_access_identity" {
 output "s3_bucket_policy" {
   value = aws_s3_bucket_policy.s3_distribution
 }
+
+output "route53_record" {
+  value = {
+    sub_NS = aws_route53_record.sub_NS
+    sub_A  = aws_route53_record.sub_A
+    main_A = aws_route53_record.main_A
+
+  }
+}
