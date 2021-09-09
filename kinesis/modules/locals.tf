@@ -1,5 +1,5 @@
 locals {
-  es_state = data.terraform_remote_state.es.outputs.es.aws_elasticsearch_domain #TODO: 
+  es_state = data.terraform_remote_state.es.outputs.amazon-es
   s3_state = data.terraform_remote_state.s3.outputs.s3
 
   dev = {
