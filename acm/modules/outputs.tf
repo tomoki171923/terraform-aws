@@ -1,7 +1,7 @@
 
 output "certificate" {
   value = {
-    main = aws_acm_certificate.cert
-    sub  = aws_acm_certificate.cert-sub
+    main = aws_acm_certificate.main
+    sub  = aws_acm_certificate.sub
   }
 }

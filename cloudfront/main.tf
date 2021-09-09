@@ -1,3 +1,0 @@
-module "cloudfront" {
-  source = "./modules"
-}
