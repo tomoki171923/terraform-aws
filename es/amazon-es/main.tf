@@ -1,3 +1,4 @@
 module "amazon-es" {
-  source = "./modules"
+  source        = "./modules"
+  whitelist_ips = var.whitelist_ips
 }
