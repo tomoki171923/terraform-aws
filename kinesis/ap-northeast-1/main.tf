@@ -1,0 +1,3 @@
+module "kinesis" {
+  source = "../modules"
+}

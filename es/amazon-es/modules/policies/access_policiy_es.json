@@ -1,0 +1,24 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "es:*",
+            "Principal": "*",
+            "Effect": "Allow",
+            "Resource": "arn:aws:es:${aws_region}:${aws_account}:domain/${domain_name}/*",
+            "Condition": {
+                "IpAddress": {
+                    "aws:SourceIp": ${whitelist_ips}
+                }
+            }
+        },
+        {
+            "Action": "es:*",
+            "Principal": {
+                "AWS": "*"
+            },
+            "Effect": "Allow",
+            "Resource": "arn:aws:es:${aws_region}:${aws_account}:domain/${domain_name}/*"
+        }
+    ]
+}

@@ -1,0 +1,3 @@
+module "sns" {
+  source = "./modules"
+}

@@ -7,10 +7,17 @@ MODULES=(
     "rds"
     "dynamodb"
     "elasticache"
+    "kinesis/ap-northeast-1"
+    "es/amazon-es"
     "ec2"
     "lambda"
     "apigateway"
     "vpc"
+    #"ecr"
+    #"cloudfront/ap-northeast-1"
+    #"route53"
+    #"acm/ap-northeast-1"
+    #"acm/us-east-1"
 )
 
 # destroy all modules
