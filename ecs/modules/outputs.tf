@@ -1,46 +1,56 @@
 
+output "_alb" {
+  value = {
+    alb = aws_alb.ecs_cluster
+    isteners = {
+      http  = aws_alb_listener.http
+      https = aws_alb_listener.https
+    }
+    target_group = aws_alb_target_group.tg
+  }
+}
+
 output "_vpc" {
   value = {
-    ecs-test-vpc                = aws_vpc.ecs-test-vpc
-    public-subnet-1             = aws_subnet.public-subnet-1
-    public-subnet-2             = aws_subnet.public-subnet-2
-    private-subnet-1            = aws_subnet.private-subnet-1
-    private-subnet-2            = aws_subnet.private-subnet-2
-    public-route-table          = aws_route_table.public-route-table
-    private-route-table         = aws_route_table.private-route-table
-    public-route-1-association  = aws_route_table_association.public-route-1-association
-    public-route-2-association  = aws_route_table_association.public-route-2-association
-    private-route-1-association = aws_route_table_association.private-route-1-association
-    private-route-2-association = aws_route_table_association.private-route-2-association
-    elastic-ip-for-nat-gw       = aws_eip.elastic-ip-for-nat-gw
-    nat-gw                      = aws_nat_gateway.nat-gw
-    nat-gw-route                = aws_route.nat-gw-route
-    igw                         = aws_internet_gateway.igw
-    public-internet-igw-route   = aws_route.public-internet-igw-route
-
+    vpc = aws_vpc.vpc
+    subents = {
+      public-a  = aws_subnet.public-a
+      public-c  = aws_subnet.public-c
+      private-a = aws_subnet.private-a
+      private-c = aws_subnet.private-c
+    }
+    igw = aws_internet_gateway.igw
+    routes = {
+      public-igw            = aws_route.public-igw
+      table_public          = aws_route_table.public
+      table_private         = aws_route_table.private
+      association-public-a  = aws_route_table_association.public-a
+      association-public-c  = aws_route_table_association.public-c
+      association-private-a = aws_route_table_association.private-a
+      association-private-c = aws_route_table_association.private-c
+    }
   }
 }
 
 
 output "_security_group" {
   value = {
-    ecs_security_group     = aws_security_group.ecs_security_group
-    ecs_alb_security_group = aws_security_group.ecs_alb_security_group
+    ecs_cluster = aws_security_group.ecs_cluster
+    ecs_alb     = aws_security_group.ecs_alb
+    ecs_service = aws_security_group.ecs_service
   }
 }
 
 
 output "_iam" {
   value = {
-    ecs_cluster_role   = aws_iam_role.ecs_cluster_role
-    ecs_cluster_policy = aws_iam_role_policy.ecs_cluster_policy
-  }
-}
-
-output "ecs" {
-  value = {
-    ecs_cluster     = aws_ecs_cluster.ecs-test-cluster
-    ecs_cluster_alb = aws_alb.ecs_cluster_alb
-
+    ecs_cluster = {
+      role   = aws_iam_role.ecs_cluster
+      policy = aws_iam_role_policy.ecs_cluster
+    }
+    ecs_service = {
+      role   = aws_iam_role.ecs_service
+      policy = aws_iam_role_policy.ecs_service
+    }
   }
 }

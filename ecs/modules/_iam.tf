@@ -2,7 +2,7 @@
   for ecs cluster
 */
 
-resource "aws_iam_role" "ecs_cluster_role" {
+resource "aws_iam_role" "ecs_cluster" {
   name = "${local.ecs_cluster_name}-iam-role"
 
   assume_role_policy = <<EOF
@@ -25,9 +25,9 @@ EOF
   }
 }
 
-resource "aws_iam_role_policy" "ecs_cluster_policy" {
+resource "aws_iam_role_policy" "ecs_cluster" {
   name = "${local.ecs_cluster_name}-iam-policy"
-  role = aws_iam_role.ecs_cluster_role.id
+  role = aws_iam_role.ecs_cluster.id
 
   policy = <<EOF
 {
@@ -61,7 +61,7 @@ EOF
   for ecs service
 */
 
-resource "aws_iam_role" "fargate_iam_role" {
+resource "aws_iam_role" "ecs_service" {
   name = "${local.ecs_service_name}-iam-role"
 
   assume_role_policy = <<EOF
@@ -80,9 +80,9 @@ resource "aws_iam_role" "fargate_iam_role" {
 EOF
 }
 
-resource "aws_iam_role_policy" "fargate_iam_policy" {
+resource "aws_iam_role_policy" "ecs_service" {
   name = "${local.ecs_service_name}-iam-role"
-  role = aws_iam_role.fargate_iam_role.id
+  role = aws_iam_role.ecs_service.id
 
   policy = <<EOF
 {

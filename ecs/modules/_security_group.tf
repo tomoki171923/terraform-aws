@@ -2,16 +2,16 @@
   for ecs cluster
 */
 
-resource "aws_security_group" "ecs_security_group" {
+resource "aws_security_group" "ecs_cluster" {
   name        = "${local.ecs_cluster_name}-sg"
   description = "Security group for ECS to communicate in and out"
-  vpc_id      = aws_vpc.ecs-test-vpc.id
+  vpc_id      = aws_vpc.vpc.id
 
   ingress {
     from_port   = 32768
     protocol    = "TCP"
     to_port     = 65535
-    cidr_blocks = [aws_vpc.ecs-test-vpc.cidr_block]
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
   }
 
   ingress {
@@ -35,10 +35,10 @@ resource "aws_security_group" "ecs_security_group" {
   }
 }
 
-resource "aws_security_group" "ecs_alb_security_group" {
-  name        = "${local.ecs_cluster_name}-ALB-SG"
+resource "aws_security_group" "ecs_alb" {
+  name        = "${local.ecs_cluster_name}-sg-alb"
   description = "Security group for ALB to traffic for ECS cluster"
-  vpc_id      = aws_vpc.ecs-test-vpc.id
+  vpc_id      = aws_vpc.vpc.id
 
   ingress {
     from_port   = 443
@@ -55,7 +55,7 @@ resource "aws_security_group" "ecs_alb_security_group" {
   }
 
   tags = {
-    Name        = "${local.ecs_cluster_name}-elb-sg"
+    Name        = "${local.ecs_cluster_name}-sg-alb"
     Terraform   = "true"
     Environment = "dev"
   }
@@ -67,16 +67,16 @@ resource "aws_security_group" "ecs_alb_security_group" {
   for ecs service
 */
 
-resource "aws_security_group" "app_security_group" {
+resource "aws_security_group" "ecs_service" {
   name        = "${local.ecs_service_name}-sg"
   description = "Security group for springbootapp to communicate in and out"
-  vpc_id      = aws_vpc.ecs-test-vpc.id
+  vpc_id      = aws_vpc.vpc.id
 
   ingress {
     from_port   = 8080
     protocol    = "TCP"
     to_port     = 8080
-    cidr_blocks = [aws_vpc.ecs-test-vpc.cidr_block]
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
   }
 
   egress {
@@ -87,6 +87,6 @@ resource "aws_security_group" "app_security_group" {
   }
 
   tags = {
-    Name = "${local.ecs_service_name}-SG"
+    Name = "${local.ecs_service_name}-sg"
   }
 }
