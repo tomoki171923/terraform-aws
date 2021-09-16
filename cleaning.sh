@@ -13,6 +13,7 @@ MODULES=(
     "lambda"
     "apigateway"
     "vpc"
+    #"ecr"
     #"cloudfront/ap-northeast-1"
     #"route53"
     #"acm/ap-northeast-1"
