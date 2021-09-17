@@ -1,4 +1,4 @@
-# terraform
+# terraform-aws
 
 This repository is the AWS Infrastructure as Code by Terraform. These are all samples.
 
