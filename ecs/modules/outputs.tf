@@ -54,3 +54,13 @@ output "_iam" {
     }
   }
 }
+
+output "_route53" {
+  value = {
+    record = aws_route53_record.a_record
+  }
+}
+
+output "ecs_cluster" {
+  value = aws_ecs_cluster.sample
+}

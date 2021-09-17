@@ -1,7 +1,9 @@
 
 locals {
-  # acm remote state
+  # route53/acm remote state
+  route53_state = data.terraform_remote_state.route53.outputs.route53
   acm_state = data.terraform_remote_state.acm.outputs.acm
+
   base_name = "ecs-sample"
   region    = "ap-northeast-1"
 
