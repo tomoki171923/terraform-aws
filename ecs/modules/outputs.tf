@@ -6,6 +6,7 @@ output "_alb" {
       http  = aws_alb_listener.http
       https = aws_alb_listener.https
     }
+    rule         = aws_alb_listener_rule.https
     target_group = aws_alb_target_group.tg
   }
 }
@@ -48,9 +49,9 @@ output "_iam" {
       role   = aws_iam_role.ecs_cluster
       policy = aws_iam_role_policy.ecs_cluster
     }
-    ecs_service = {
-      role   = aws_iam_role.ecs_service
-      policy = aws_iam_role_policy.ecs_service
+    fargate = {
+      role   = aws_iam_role.fargate
+      policy = aws_iam_role_policy.fargate
     }
   }
 }
@@ -63,4 +64,12 @@ output "_route53" {
 
 output "ecs_cluster" {
   value = aws_ecs_cluster.sample
+}
+
+output "ecs_service" {
+  value = aws_ecs_service.sample
+}
+
+output "ecs_task_definition" {
+  value = aws_ecs_task_definition.sample
 }

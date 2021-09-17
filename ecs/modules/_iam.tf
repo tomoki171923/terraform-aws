@@ -61,7 +61,7 @@ EOF
   for ecs service
 */
 
-resource "aws_iam_role" "ecs_service" {
+resource "aws_iam_role" "fargate" {
   name = "${local.ecs_service_name}-iam-role"
 
   assume_role_policy = <<EOF
@@ -80,9 +80,9 @@ resource "aws_iam_role" "ecs_service" {
 EOF
 }
 
-resource "aws_iam_role_policy" "ecs_service" {
+resource "aws_iam_role_policy" "fargate" {
   name = "${local.ecs_service_name}-iam-role"
-  role = aws_iam_role.ecs_service.id
+  role = aws_iam_role.fargate.id
 
   policy = <<EOF
 {

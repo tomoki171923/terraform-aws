@@ -56,11 +56,39 @@ resource "aws_alb_listener" "https" {
   }
 }
 
+resource "aws_alb_listener_rule" "https" {
+  listener_arn = aws_alb_listener.https.arn
+  priority     = 100
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.tg.arn
+  }
+
+  condition {
+    host_header {
+      values = [local.domain_name]
+    }
+  }
+}
+
+
 resource "aws_alb_target_group" "tg" {
   name     = "${local.ecs_cluster_name}-tg"
-  port     = 80
+  port     = local.container_port
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc.id
+
+  health_check {
+    path                = "/"
+    protocol            = "HTTP"
+    matcher             = "200"
+    interval            = "60"
+    timeout             = "30"
+    unhealthy_threshold = "3"
+    healthy_threshold   = "3"
+  }
+
   tags = {
     Name        = "${local.ecs_cluster_name}-tg"
     Terraform   = "true"

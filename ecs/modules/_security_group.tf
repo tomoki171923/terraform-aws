@@ -4,7 +4,7 @@
 
 resource "aws_security_group" "ecs_cluster" {
   name        = "${local.ecs_cluster_name}-sg"
-  description = "Security group for ECS to communicate in and out"
+  description = "Security group for ECS cluster to communicate in and out"
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
@@ -34,6 +34,10 @@ resource "aws_security_group" "ecs_cluster" {
     Environment = "dev"
   }
 }
+
+/*
+  for ecs alb
+*/
 
 resource "aws_security_group" "ecs_alb" {
   name        = "${local.ecs_cluster_name}-sg-alb"
@@ -69,7 +73,7 @@ resource "aws_security_group" "ecs_alb" {
 
 resource "aws_security_group" "ecs_service" {
   name        = "${local.ecs_service_name}-sg"
-  description = "Security group for springbootapp to communicate in and out"
+  description = "Security group for ECS service to communicate in and out"
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
@@ -87,6 +91,8 @@ resource "aws_security_group" "ecs_service" {
   }
 
   tags = {
-    Name = "${local.ecs_service_name}-sg"
+    Name        = "${local.ecs_service_name}-sg"
+    Terraform   = "true"
+    Environment = "dev"
   }
 }

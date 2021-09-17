@@ -1,0 +1,33 @@
+[
+    {
+        "image": "${docker_image_url}",
+        "name": "${container_name}",
+        "command": [],
+        "cpu": 0,
+        "entryPoint": [],
+        "environment": [
+            {
+                "name": "VARNAME",
+                "value": "VARVAL"
+            }
+        ],
+        "essential": true,
+        "portMappings": [
+            {
+                "containerPort": ${container_port},
+                "hostPort": ${container_port},
+                "protocol": "tcp"
+            }
+        ],
+        "mountPoints": [],
+        "volumesFrom": [],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/aws//ecs/${ecs_cluster_name}",
+                "awslogs-region": "${region}",
+                "awslogs-stream-prefix": "${ecs_service_name}"
+            }
+        }
+    }
+]

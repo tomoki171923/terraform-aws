@@ -2,10 +2,12 @@
 locals {
   # route53/acm remote state
   route53_state = data.terraform_remote_state.route53.outputs.route53
-  acm_state = data.terraform_remote_state.acm.outputs.acm
+  acm_state     = data.terraform_remote_state.acm.outputs.acm
+  ecr_state     = data.terraform_remote_state.ecr.outputs.ecr
 
-  base_name = "ecs-sample"
-  region    = "ap-northeast-1"
+  base_name   = "ecs-sample"
+  region      = data.aws_region.current.name
+  domain_name = "ecs.${local.route53_state.zone.main.name}"
 
   # vpc
   vpc_cidr              = "10.0.0.0/16"
@@ -20,9 +22,7 @@ locals {
   ecs_service_name = "${local.base_name}-service"
 
   # conatiner
-  docker_image_ur       = ""
-  memory                = ""
-  docker_container_port = ""
-  spring_profile        = ""
-  desired_task_number   = ""
+  container_name      = "sample-app"
+  container_port      = 8080
+  desired_task_number = 2
 }

@@ -1,72 +1,46 @@
 # ********************************* #
 # ECS
 # ref: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service
-#      https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb
 # ********************************* #
-/*
-resource "aws_ecs_service" "ecs_service" {
+
+resource "aws_ecs_service" "sample" {
   name            = local.ecs_service_name
-  task_definition = local.ecs_service_name
+  task_definition = aws_ecs_task_definition.sample.arn
   desired_count   = local.desired_task_number
-  cluster         = data.terraform_remote_state.platform.outputs.ecs_cluster_name
+  cluster         = aws_ecs_cluster.sample.arn
   launch_type     = "FARGATE"
 
   network_configuration {
-    # subnets           = [data.terraform_remote_state.platform.outputs.ecs_public_subnets]
-    subnets           = data.terraform_remote_state.platform.outputs.ecs_public_subnets
-    security_groups   = [aws_security_group.app_security_group.id]
-    assign_public_ip  = true
+    subnets          = [aws_subnet.private-a.id, aws_subnet.private-c.id]
+    security_groups  = [aws_security_group.ecs_service.id]
+    assign_public_ip = false
   }
 
   load_balancer {
-    container_name   = local.ecs_service_name
-    container_port   = local.docker_container_port
-    target_group_arn = aws_alb_target_group.ecs_app_target_group.arn
-  }
-}
-
-
-
-resource "aws_alb_target_group" "ecs_app_target_group" {
-  name        = "${local.ecs_service_name}-TG"
-  port        = local.docker_container_port
-  protocol    = "HTTP"
-  vpc_id      = data.terraform_remote_state.platform.outputs.vpc_id
-  target_type = "ip"
-
-  health_check {
-    path                = "/actuator/health"
-    protocol            = "HTTP"
-    matcher             = "200"
-    interval            = "60"
-    timeout             = "30"
-    unhealthy_threshold = "3"
-    healthy_threshold   = "3"
+    container_name   = local.container_name
+    container_port   = local.container_port
+    target_group_arn = aws_alb_target_group.tg.arn
   }
 
   tags = {
-    Name = "${local.ecs_service_name}-TG"
+    Name        = local.ecs_service_name
+    Terraform   = "true"
+    Environment = "dev"
+  }
+
+  #depends_on = [aws_ecs_task_definition.sample]
+
+  lifecycle {
+    ignore_changes = [
+      task_definition
+    ]
   }
 }
 
-resource "aws_alb_listener_rule" "ecs_alb_listener_rule" {
-  listener_arn = data.terraform_remote_state.platform.outputs.ecs_alb_listener_arn
-  priority     = 100
 
-  action {
-    type             = "forward"
-    target_group_arn = aws_alb_target_group.ecs_app_target_group.arn
-  }
 
-  condition {
-    host_header {
-      values = ["${lower(local.ecs_service_name)}.${data.terraform_remote_state.platform.outputs.ecs_domain_name}"]
-    }
-  }
-}
-
+/*
 resource "aws_cloudwatch_log_group" "springbootapp_log_group" {
   name = "${local.ecs_service_name}-LogGroup"
 }
-
 */
