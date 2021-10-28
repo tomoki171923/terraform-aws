@@ -1,0 +1,3 @@
+module "codebuild" {
+  source = "../modules"
+}
