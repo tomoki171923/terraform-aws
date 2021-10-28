@@ -1,5 +1,5 @@
 module "codebuild_policy" {
-  # remote module 
+  # remote module
   source = "terraform-aws-modules/iam/aws//modules/iam-policy"
 
   name        = "coudebuild_base_policy_${var.build_project_name}_${data.aws_region.current.name}"
@@ -8,13 +8,13 @@ module "codebuild_policy" {
 
   policy = data.template_file.codebuild_policy.rendered
   tags = {
-    Terraform    = "true"
-    Environment  = "dev"
+    Terraform   = "true"
+    Environment = "dev"
   }
 }
 
 module "codebuild_role" {
-  # remote module 
+  # remote module
   source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
 
   trusted_role_services = [
@@ -29,8 +29,7 @@ module "codebuild_role" {
     module.codebuild_policy.arn
   ]
   tags = {
-    Terraform    = "true"
-    Environment  = "dev"
+    Terraform   = "true"
+    Environment = "dev"
   }
 }
-

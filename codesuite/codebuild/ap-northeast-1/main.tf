@@ -1,3 +1,4 @@
 module "codebuild" {
-  source = "../modules"
+  source       = "../modules"
+  github_token = var.github_token
 }
