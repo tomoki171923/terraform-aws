@@ -4,6 +4,7 @@ BASE_PATH=$(cd $(dirname $0); pwd)
 
 # in the destroying order
 MODULES=(
+    "ssm/ap-northeast-1"
     "rds"
     "dynamodb"
     "elasticache"
