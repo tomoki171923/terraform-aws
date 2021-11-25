@@ -1,0 +1,15 @@
+{
+  "Statement": {
+    "Action": [
+      "kms:DescribeKey",
+      "kms:ListKeys",
+      "kms:ListAliases",
+      "kms:ListResourceTags",
+      "kms:GenerateDataKey",
+      "kms:Decrypt"
+    ],
+    "Effect": "Allow",
+    "Resource": "arn:aws:kms:${aws_region}:${aws_account}:key/*"
+  },
+  "Version": "2012-10-17"
+}
