@@ -11,3 +11,7 @@ output "security_group" {
 output "vpc" {
   value = module.vpc
 }
+
+output "endpoint" {
+  value = module.endpoints
+}
