@@ -7,7 +7,7 @@ module "vpc" {
   # remote module
   source     = "terraform-aws-modules/vpc/aws"
   create_vpc = true
-  name       = "${var.vpc_name}-vpc"
+  name       = "${var.base_name}-vpc"
   cidr       = "10.101.0.0/16"
 
   azs             = ["ap-northeast-1a", "ap-northeast-1c", "ap-northeast-1d"]
@@ -41,12 +41,12 @@ module "vpc" {
     Environment = "dev"
   }
   vpc_tags = {
-    Name = "${var.vpc_name}-vpc"
+    Name = "${var.base_name}-vpc"
   }
   public_subnet_tags = {
-    Name = "${var.vpc_name}-public-subnet"
+    Name = "${var.base_name}-public-subnet"
   }
   private_subnet_tags = {
-    Name = "${var.vpc_name}-private-subnet"
+    Name = "${var.base_name}-private-subnet"
   }
 }

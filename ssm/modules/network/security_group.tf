@@ -4,7 +4,7 @@
 # ********************************* #
 
 resource "aws_security_group" "public" {
-  name        = "${var.vpc_name}-public-sg"
+  name        = "${var.base_name}-public-sg"
   description = "Allow all inbound traffic"
   vpc_id      = module.vpc.vpc_id
   ingress {
@@ -24,7 +24,7 @@ resource "aws_security_group" "public" {
   }
 
   tags = {
-    Name        = "${var.vpc_name}-public-sg"
+    Name        = "${var.base_name}-public-sg"
     Terraform   = "true"
     Environment = "dev"
   }
@@ -32,7 +32,7 @@ resource "aws_security_group" "public" {
 
 
 resource "aws_security_group" "ssm" {
-  name        = "${var.vpc_name}-ssm-sg"
+  name        = "${var.base_name}-ssm-sg"
   description = "Allow https inbound traffic from vpc subnets"
   vpc_id      = module.vpc.vpc_id
 
@@ -46,7 +46,7 @@ resource "aws_security_group" "ssm" {
   }
 
   tags = {
-    Name        = "${var.vpc_name}-ssm-sg"
+    Name        = "${var.base_name}-ssm-sg"
     Terraform   = "true"
     Environment = "dev"
   }

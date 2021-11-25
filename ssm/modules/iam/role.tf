@@ -18,6 +18,7 @@ module "role_ec2_ssm_managed" {
   custom_role_policy_arns = [
     data.aws_iam_policy.AmazonSSMManagedInstanceCore.arn,
     data.aws_iam_policy.CloudWatchAgentServerPolicy.arn,
+    data.aws_iam_policy.AmazonSSMPatchAssociation.arn,
     module.policy_kms_core.arn,
   ]
 }

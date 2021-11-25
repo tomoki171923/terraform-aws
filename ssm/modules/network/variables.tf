@@ -1,4 +1,3 @@
-variable "vpc_name" {
-  default = "sample_ssm"
-  type    = string
+variable "base_name" {
+  type = string
 }
