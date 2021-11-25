@@ -4,7 +4,7 @@
 # ********************************* #
 
 module "vpc" {
-  # remote module 
+  # remote module
   source     = "terraform-aws-modules/vpc/aws"
   create_vpc = true
   name       = "${var.vpc_name}-vpc"
@@ -28,7 +28,7 @@ module "vpc" {
   one_nat_gateway_per_az = false
 
   # s3 endpoint
-  enable_s3_endpoint = true
+  #enable_s3_endpoint = true
 
   # dynamodb endpoint
   #enable_dynamodb_endpoint = true

@@ -2,20 +2,20 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/hashicorp/aws" {
-  version     = "3.36.0"
-  constraints = ">= 2.70.0, ~> 3.35"
+  version     = "3.66.0"
+  constraints = ">= 3.28.0, ~> 3.60, >= 3.63.0"
   hashes = [
-    "h1:KL3jLlJjk3d9/IoXqDWmsBglsLIYRL8ieAEG0Zl+3fE=",
-    "zh:17b1e924f1efc0084823bbcdd9565b6b7018b17e8471f65fc59c2d9617e28b60",
-    "zh:1fd5dfe2d22db93c576c2f328b4a9cf28e09b88496888a54a25325c638a69bec",
-    "zh:269d7e870fc86db4336ac215282ac0a97522209453ce6cc9022ab2079e4e7a3b",
-    "zh:3b107da332bccec4a6e60ed790323d7cc8d264d8b5709cb14a931728bb06241e",
-    "zh:74480ff5c05f9156f32c9d93c2c43bb13d7ae21bdc85b727550fe4c1812252ca",
-    "zh:79c60989f44dba2851c790dc15f18b80ba811e6140260cc42b9fe343656e3a01",
-    "zh:7f6fd96abd233acc52ec412bc72fb52784e47475f16eaa908e72c4c4b0997109",
-    "zh:b2fba2820c505a10211199112d3e16cac224b638ba6f8b09b8b635746cc49a11",
-    "zh:c4f53cb16f5e7439cefcddcc2e91798e5ec6a11ca6f9442e2ec509cd0859625c",
-    "zh:ec54a1b2ffbec157fad0b6e0efc0d8da1e1153874060d47497ab1a5e9d6ab26f",
-    "zh:f01d0fe3f7757fe290dc7889ffe1d926da665a7a0bb895b9f2518c3ac5c6963c",
+    "h1:V2HWB95PQn9c6P1GsPaUKZHRSBiAyh45tngFVsg4SxQ=",
+    "zh:21331ca956428f207c276c3e57ac8aa854b950b740e20318da727928460da42c",
+    "zh:2ae02a92abac8c99095c98272176543fefc9a3e584a5ca279c9d346cae1825f1",
+    "zh:578e06c8559a124b9d9c904d526ba4d1abe1fe4c66c5c130b7d4a595ff6338ff",
+    "zh:699f58910307d42d6320d8ccf10d909a262fe7b5fc2dd7bf9e15eaa5a1374d4d",
+    "zh:8f61bf009a6f5ebfa8e1588df8d4f75ae275c6ef636eea1ef377aa4e6a388be5",
+    "zh:931b0beafcbd7e11fa59e554fd41b54e548cb994908e89f31ea9d612fce26eb9",
+    "zh:b3d5abde76e4bda153a63a11c1fa5aec19f6f977cbf1e26adcd2916ec93c1b6f",
+    "zh:b5a4f97335387b21fa38eed7c22b3c92f6b1157ed301a0880548277136962e48",
+    "zh:bfaf6c7fa7cc13cb833015d4eef700df652f40c6e658e76cf23aebfa4c8b7afe",
+    "zh:d56f612da07dee639e8eb75ce6a6f1b1255ec964e6fe9333c6a8fddd7ccf931f",
+    "zh:f695dfb0dbea6f48f6e6eb0ff5766f98d1f1708b77889df39c67113fbcd8a3cd",
   ]
 }
