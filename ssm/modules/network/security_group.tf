@@ -36,7 +36,7 @@ resource "aws_security_group" "ssm" {
   description = "Allow https inbound traffic from vpc subnets"
   vpc_id      = module.vpc.vpc_id
 
-  ingress {
+  egress {
     description = "SSL/TLS"
     from_port   = 443
     to_port     = 443
