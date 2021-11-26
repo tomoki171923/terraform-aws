@@ -7,13 +7,9 @@ module "endpoints" {
   source = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
 
   vpc_id             = module.vpc.vpc_id
-  security_group_ids = [aws_security_group.public.id]
+  security_group_ids = [aws_security_group.ssm.id]
 
   endpoints = {
-    s3 = {
-      service = "s3"
-      tags    = { Name = "s3-vpc-endpoint" }
-    },
     // for ssm agent
     ec2messages = {
       service             = "ec2messages"

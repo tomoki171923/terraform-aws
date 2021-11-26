@@ -33,3 +33,6 @@ data "aws_iam_policy" "AmazonSSMManagedInstanceCore" {
 data "aws_iam_policy" "CloudWatchAgentServerPolicy" {
   name = "CloudWatchAgentServerPolicy"
 }
+data "aws_iam_policy" "AmazonSSMPatchAssociation" {
+  name = "AmazonSSMPatchAssociation"
+}

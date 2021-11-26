@@ -1,4 +1,5 @@
 {
+"Version": "2012-10-17",
   "Statement": [
     {
       "Action": [
@@ -12,6 +13,5 @@
       "Effect": "Allow",
       "Resource": "arn:aws:ec2:${aws_region}:${aws_account}:instance/*"
     }
-  ],
-  "Version": "2012-10-17"
+  ]
 }
