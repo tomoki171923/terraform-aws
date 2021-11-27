@@ -21,3 +21,15 @@ variable "security_groups" {
 variable "ecr_repository_url" {
   type = string
 }
+
+variable "container_name" {
+  type = string
+}
+
+variable "container_port" {
+  type = string
+}
+
+variable "container_tag" {
+  type = string
+}
