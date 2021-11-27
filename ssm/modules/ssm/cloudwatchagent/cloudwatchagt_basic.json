@@ -1,130 +1,69 @@
 {
   "agent": {
     "metrics_collection_interval": 10,
-    "logfile": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log"
-  },
-  "metrics": {
-    "namespace": "MyCustomNamespace",
-    "metrics_collected": {
-      "cpu": {
-        "resources": [
-          "*"
-        ],
-        "measurement": [
-          {"name": "cpu_usage_idle", "rename": "CPU_USAGE_IDLE", "unit": "Percent"},
-          {"name": "cpu_usage_nice", "unit": "Percent"},
-          "cpu_usage_guest"
-        ],
-        "totalcpu": false,
-        "metrics_collection_interval": 10,
-        "append_dimensions": {
-          "customized_dimension_key_1": "customized_dimension_value_1",
-          "customized_dimension_key_2": "customized_dimension_value_2"
-        }
-      },
-      "disk": {
-        "resources": [
-          "/",
-          "/tmp"
-        ],
-        "measurement": [
-          {"name": "free", "rename": "DISK_FREE", "unit": "Gigabytes"},
-          "total",
-          "used"
-        ],
-         "ignore_file_system_types": [
-          "sysfs", "devtmpfs"
-        ],
-        "metrics_collection_interval": 60,
-        "append_dimensions": {
-          "customized_dimension_key_3": "customized_dimension_value_3",
-          "customized_dimension_key_4": "customized_dimension_value_4"
-        }
-      },
-      "diskio": {
-        "resources": [
-          "*"
-        ],
-        "measurement": [
-          "reads",
-          "writes",
-          "read_time",
-          "write_time",
-          "io_time"
-        ],
-        "metrics_collection_interval": 60
-      },
-      "swap": {
-        "measurement": [
-          "swap_used",
-          "swap_free",
-          "swap_used_percent"
-        ]
-      },
-      "mem": {
-        "measurement": [
-          "mem_used",
-          "mem_cached",
-          "mem_total"
-        ],
-        "metrics_collection_interval": 1
-      },
-      "net": {
-        "resources": [
-          "eth0"
-        ],
-        "measurement": [
-          "bytes_sent",
-          "bytes_recv",
-          "drop_in",
-          "drop_out"
-        ]
-      },
-      "netstat": {
-        "measurement": [
-          "tcp_established",
-          "tcp_syn_sent",
-          "tcp_close"
-        ],
-        "metrics_collection_interval": 60
-      },
-      "processes": {
-        "measurement": [
-          "running",
-          "sleeping",
-          "dead"
-        ]
-      }
-    },
-    "append_dimensions": {
-      "ImageId": "${aws:ImageId}",
-      "InstanceId": "${aws:InstanceId}",
-      "InstanceType": "${aws:InstanceType}",
-      "AutoScalingGroupName": "${aws:AutoScalingGroupName}"
-    },
-    "aggregation_dimensions" : [["ImageId"], ["InstanceId", "InstanceType"], ["d1"],[]],
-    "force_flush_interval" : 30
+    "run_as_user": "root"
   },
   "logs": {
     "logs_collected": {
       "files": {
         "collect_list": [
           {
-            "file_path": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log",
-            "log_group_name": "amazon-cloudwatch-agent.log",
-            "log_stream_name": "amazon-cloudwatch-agent.log",
-            "timezone": "UTC"
-          },
-          {
-            "file_path": "/opt/aws/amazon-cloudwatch-agent/logs/test.log",
-            "log_group_name": "test.log",
-            "log_stream_name": "test.log",
-            "timezone": "Local"
+            "file_path": "/var/log/messages",
+            "log_group_name": "/aws/ec2/${instane_name}",
+            "log_stream_name": "{instance_id}",
+            "timezone": "LOCAL"
           }
         ]
       }
+    }
+  },
+  "metrics": {
+    "namespace": "Develop/${instane_name}",
+    "append_dimensions": {
+      "ImageId": "$${aws:ImageId}",
+      "InstanceId": "$${aws:InstanceId}",
+      "InstanceType": "$${aws:InstanceType}",
+      "AutoScalingGroupName": "$${aws:AutoScalingGroupName}"
     },
-    "log_stream_name": "my_log_stream_name",
-    "force_flush_interval" : 15
+    "metrics_collected": {
+      "collectd": {
+        "name_prefix": "collectd_metrics_",
+        "metrics_aggregation_interval": 60
+      },
+      "mem": {
+        "measurement": [
+          "mem_used_percent"
+        ],
+        "metrics_collection_interval": 60
+      },
+      "swap": {
+        "measurement": [
+          "swap_used_percent"
+        ],
+        "metrics_aggregation_interval": 60
+      },
+      "statsd": {
+        "service_address": ":8125",
+        "metrics_collection_interval": 10,
+        "metrics_aggregation_interval": 60
+      },
+      "procstat": [
+        {
+          "pattern": "java",
+          "measurement": [
+            "pid",
+            "memory_data",
+            "memory_rss",
+            "memory_stack",
+            "memory_swap",
+            "memory_vms",
+            "rlimit_memory_data_hard",
+            "rlimit_memory_data_soft",
+            "rlimit_memory_stack_hard",
+            "rlimit_memory_stack_soft"
+          ]
+        }
+      ]
+    }
   }
 }
