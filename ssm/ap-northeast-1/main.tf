@@ -26,12 +26,17 @@ data "aws_ecr_repository" "myecr" {
 
 module "ecs" {
   source             = "../modules/ecs"
-  base_name          = "SampleSSM"
+  cluster_name       = "SampleSSM"
+  service_name       = "SampleSSM"
+  task_name          = "SampleSSM"
   task_role_arn      = module.iam.instance_profile.ssm_instance_profile.name
   execution_role_arn = module.iam.instance_profile.ssm_instance_profile.name
   subnets            = module.network.vpc.private_subnets
   security_groups    = [module.network.security_group.ssm2ec2.id]
-  ecr_repository_url = data.aws_ecr_repository.myecr.repository_url
+  repository_url     = data.aws_ecr_repository.myecr.repository_url
+  container_name     = "SampleSSMcontainer"
+  container_port     = "80"
+  container_tag      = "1.0.0"
   depends_on = [
     module.network,
     module.iam,

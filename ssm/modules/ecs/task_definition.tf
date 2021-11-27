@@ -1,6 +1,6 @@
 resource "aws_ecs_task_definition" "this" {
   container_definitions    = data.template_file.task_definition.rendered
-  family                   = "${base_name}_task"
+  family                   = var.task_name
   cpu                      = 256
   memory                   = 512
   requires_compatibilities = ["FARGATE"]

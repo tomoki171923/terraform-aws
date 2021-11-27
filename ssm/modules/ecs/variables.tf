@@ -1,4 +1,12 @@
-variable "base_name" {
+variable "cluster_name" {
+  type = string
+}
+
+variable "service_name" {
+  type = string
+}
+
+variable "task_name" {
   type = string
 }
 
@@ -18,7 +26,7 @@ variable "security_groups" {
   type = list(string)
 }
 
-variable "ecr_repository_url" {
+variable "repository_url" {
   type = string
 }
 

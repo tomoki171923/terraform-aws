@@ -5,7 +5,7 @@
 # ********************************* #
 
 resource "aws_ecs_service" "this" {
-  name            = "${var.base_name}_service"
+  name            = var.service_name
   task_definition = aws_ecs_task_definition.this.arn
   desired_count   = 1
   cluster         = aws_ecs_cluster.this.name
@@ -20,7 +20,7 @@ resource "aws_ecs_service" "this" {
   enable_execute_command = true
 
   tags = {
-    Name        = "${var.base_name}_service"
+    Name        = var.service_name
     Terraform   = "true"
     Environment = "dev"
   }
