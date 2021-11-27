@@ -1,0 +1,17 @@
+{
+"Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "ssm:StartSession"
+      ],
+      "Condition": {
+        "StringEqualsIgnoreCase": {
+          "aws:ResourceTag/Environment": "${environment_tag}"
+        }
+      },
+      "Effect": "Allow",
+      "Resource": "arn:aws:ec2:${aws_region}:${aws_account}:instance/*"
+    }
+  ]
+}
