@@ -74,3 +74,13 @@ ip-10-101-1-93.ap-northeast-1.compute.internal
 ssm-user
 sh-4.2$
 ```
+
+## Cloudwatch Agent
+
+### install collected on EC2
+
+<https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-custom-metrics-collectd.html>
+
+### update Cloudwatch Agent config
+
+TBD

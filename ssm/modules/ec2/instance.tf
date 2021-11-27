@@ -9,6 +9,20 @@ locals {
   ami = "ami-041e79f67e2ad93be" # amzn2-ami-kernel-5.10-hvm-2.0.20211103.1-arm64-gp2 with ssm agent and cloudwatch agent.
 }
 
+resource "aws_instance" "open" {
+  count                = 0
+  ami                  = local.ami
+  instance_type        = "t4g.nano"
+  key_name             = "sample"
+  iam_instance_profile = var.iam_instance_profile
+  tags = {
+    Name        = "${var.base_name}InstanceOpen"
+    Environment = "dev"
+    Terraform   = "true"
+    SSM         = "true"
+  }
+}
+
 resource "aws_instance" "this" {
   count                  = 1
   ami                    = local.ami
