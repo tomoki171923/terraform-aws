@@ -6,7 +6,7 @@
 locals {
   # Amazon Linux 2 AMI (HVM) - Kernel 5.10, SSD Volume Type - ami-0404778e217f54308 (64 ビット x86) / ami-03195e1b4a3b0b993 (64 ビット Arm)
   #ami = "ami-03195e1b4a3b0b993" # Amazon Linux 2 arm
-  ami = "ami-041e79f67e2ad93be" # amzn2-ami-kernel-5.10-hvm-2.0.20211103.1-arm64-gp2 with ssm agent and cloudwatch agent.
+  ami = "ami-0ef5df6525f1522b3" # amzn2-ami-kernel-5.10-hvm-2.0.20211103.1-arm64-gp2 with ssm agent , cloudwatch agent and collectd.
 }
 
 resource "aws_instance" "open" {

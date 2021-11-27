@@ -83,4 +83,24 @@ sh-4.2$
 
 ### update Cloudwatch Agent config
 
-TBD
+<https://ap-northeast-1.console.aws.amazon.com/systems-manager/run-command/executing-commands?region=ap-northeast-1>
+
+Run Command >
+
+- Command document:
+  select [AmazonCloudWatch-ManageAgent]
+
+- Command parameters:
+  Action: configure
+  Mode: ec2
+  Optional Configuration Source: ssm
+  Optional Configuration Location: YOUR SSM PARAMETER NAME (e.g. cloudwatchagt_basic)
+  Optional Restart: yes
+
+- Targets
+  select instances
+
+- Output options
+  check [Enable CloudWatch logs]
+
+Click [Run] button.
