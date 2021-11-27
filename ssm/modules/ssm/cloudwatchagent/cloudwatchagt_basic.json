@@ -11,7 +11,7 @@
             "file_path": "/var/log/message",
             "log_group_name": "/aws/ec2/${instane_name}",
             "log_stream_name": "{instance_id}",
-            "timezone": "JST"
+            "timezone": "LOCAL"
           }
         ]
       }
