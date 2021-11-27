@@ -23,6 +23,10 @@ output "ec2" {
   value = module.ec2
 }
 
+output "ecs" {
+  value = module.ecs
+}
+
 output "ssm" {
   value = module.ssm
 }
