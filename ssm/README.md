@@ -8,11 +8,13 @@ Set SSM agent & Cloudwatch agent in EC2 instances.
 
 Quick Setup > Get Started > Create > Host Management >
 
-Configuration options:
-select all check boxes.
+- Configuration options:
+  select all check boxes.
 
-Targets:
-select your instances.
+- Target Instances:
+  Manual > select your instances.
+  or
+  Specify instance tag > add tag [Key: SSM , Value: true]
 
 Click [Create] button.
 
@@ -24,11 +26,11 @@ Click [Create] button.
 
 Edit > CloudWatch logging >
 
-CloudWatch logging:
-select Enable.
+- CloudWatch logging:
+  select Enable.
 
-Choose a log group name from the list:
-select [/aws/ssm/console]
+- Choose a log group name from the list:
+  select [/aws/ssm/console]
 
 ### from AWS Console to EC2
 
@@ -36,8 +38,8 @@ select [/aws/ssm/console]
 
 Start session >
 
-Target instances:
-select your instances.
+- Target instances:
+  select your instances.
 
 Click [Start sesstion] button.
 
