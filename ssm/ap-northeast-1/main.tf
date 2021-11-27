@@ -13,7 +13,7 @@ module "ec2" {
   base_name              = "SampleSSM"
   iam_instance_profile   = module.iam.instance_profile.ssm_instance_profile.name
   subnet_id              = module.network.vpc.private_subnets[0]
-  vpc_security_group_ids = [module.network.security_group.ssm.id]
+  vpc_security_group_ids = [module.network.security_group.ssm2ec2.id]
   depends_on = [
     module.network,
     module.iam,
