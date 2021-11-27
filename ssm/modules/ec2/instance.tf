@@ -27,8 +27,8 @@ resource "aws_instance" "this" {
 
   tags = {
     Name        = "${var.base_name}Instance"
-    Terraform   = "true"
     Environment = "dev"
-    SSM         = "True"
+    Terraform   = "true"
+    SSM         = "true"
   }
 }
