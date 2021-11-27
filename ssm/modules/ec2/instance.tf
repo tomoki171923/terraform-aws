@@ -29,5 +29,6 @@ resource "aws_instance" "this" {
     Name        = "${var.base_name}Instance"
     Terraform   = "true"
     Environment = "dev"
+    SSM         = "True"
   }
 }
