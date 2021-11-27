@@ -103,4 +103,4 @@ Run Command >
 - Output options
   check [Enable CloudWatch logs]
 
-Click [Run] button.
+Click [RUN] button.
