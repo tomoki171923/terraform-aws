@@ -17,6 +17,7 @@ module "iam" {
 }
 
 module "ec2" {
+  count                  = 0
   source                 = "../modules/ec2"
   base_name              = local.base_name
   iam_instance_profile   = module.iam.instance_profile.ssm_instance_profile.name
@@ -33,8 +34,8 @@ module "ecs" {
   cluster_name       = "${local.base_name}Cluster"
   service_name       = "${local.base_name}Service"
   task_name          = "${local.base_name}Task"
-  task_role_arn      = module.iam.instance_profile.ssm_instance_profile.name
-  execution_role_arn = module.iam.instance_profile.ssm_instance_profile.name
+  task_role_arn      = module.iam.role.task_role.iam_role_arn
+  execution_role_arn = module.iam.role.task_exec_role.iam_role_arn
   subnets            = module.network.vpc.private_subnets
   security_groups    = [module.network.security_group.ssm2ec2.id]
   repository_url     = data.aws_ecr_repository.myecr.repository_url

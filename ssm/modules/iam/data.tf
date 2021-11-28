@@ -36,3 +36,9 @@ data "aws_iam_policy" "CloudWatchAgentServerPolicy" {
 data "aws_iam_policy" "AmazonSSMPatchAssociation" {
   name = "AmazonSSMPatchAssociation"
 }
+data "aws_iam_policy" "AmazonECSTaskExecutionRolePolicy" {
+  name = "AmazonECSTaskExecutionRolePolicy"
+}
+data "aws_iam_policy" "AmazonS3FullAccess" {
+  name = "AmazonS3FullAccess"
+}

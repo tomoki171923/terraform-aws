@@ -21,6 +21,8 @@ output "policy" {
 output "role" {
   value = {
     ec2_ssm_managed = module.role_ec2_ssm_managed
+    task_exec_role  = module.role_task_exec_role
+    task_role       = module.role_task_role
   }
 }
 

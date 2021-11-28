@@ -22,3 +22,39 @@ module "role_ec2_ssm_managed" {
     module.policy_kms_core.arn,
   ]
 }
+
+# for a ECS container agent
+module "role_task_exec_role" {
+  # remote module
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+
+  trusted_role_services = [
+    "ecs-tasks.amazonaws.com"
+  ]
+  create_role       = true
+  role_name         = "${var.base_name}ECSTaskExecRole"
+  role_description  = "IAM role for a ECS container agent"
+  role_requires_mfa = false
+
+  custom_role_policy_arns = [
+    data.aws_iam_policy.AmazonECSTaskExecutionRolePolicy.arn,
+  ]
+}
+
+# for container on ECS
+module "role_task_role" {
+  # remote module
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+
+  trusted_role_services = [
+    "ecs-tasks.amazonaws.com"
+  ]
+  create_role       = true
+  role_name         = "${var.base_name}ECSTaskRole"
+  role_description  = "IAM role for a container on ECS"
+  role_requires_mfa = false
+
+  custom_role_policy_arns = [
+    data.aws_iam_policy.AmazonS3FullAccess.arn,
+  ]
+}
