@@ -7,12 +7,4 @@ resource "aws_ecs_task_definition" "this" {
   network_mode             = "awsvpc"
   execution_role_arn       = var.execution_role_arn
   task_role_arn            = var.task_role_arn
-  lifecycle {
-    ignore_changes = [
-      container_definitions,
-      family,
-      cpu,
-      memory
-    ]
-  }
 }
