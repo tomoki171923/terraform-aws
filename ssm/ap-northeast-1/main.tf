@@ -41,7 +41,7 @@ module "ecs" {
   repository_url     = data.aws_ecr_repository.myecr.repository_url
   container_name     = "${local.base_name}Container"
   container_port     = "80"
-  container_tag      = "1.0.0"
+  image_tag          = var.image_tag
   depends_on = [
     module.network,
     module.iam,

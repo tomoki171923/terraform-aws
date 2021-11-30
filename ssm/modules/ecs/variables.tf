@@ -38,6 +38,6 @@ variable "container_port" {
   type = string
 }
 
-variable "container_tag" {
+variable "image_tag" {
   type = string
 }

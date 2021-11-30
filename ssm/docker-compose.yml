@@ -1,0 +1,9 @@
+version: '3'
+services:
+  amzn2:
+    container_name: 'local_amzn2'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./local/:/home/ec2-user/

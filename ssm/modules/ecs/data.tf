@@ -8,10 +8,9 @@ data "template_file" "task_definition" {
   vars = {
     ecs_cluster_name = var.cluster_name
     ecs_service_name = var.service_name
-    docker_image_url = "${var.repository_url}:1.0.0"
+    docker_image_url = "${var.repository_url}:${var.image_tag}"
     container_name   = var.container_name
     container_port   = var.container_port
-    container_tag    = var.container_tag
     aws_region       = data.aws_region.this.name
   }
 }

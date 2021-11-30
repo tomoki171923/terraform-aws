@@ -1,9 +1,5 @@
 #!/bin/bash
 
-BASE_PATH=$(
-	cd $(dirname $0)
-	pwd
-)
 DEFAULT="\033[00m"
 BOLD="\033[01m"
 COLOR_GREEN="\033[32m"
