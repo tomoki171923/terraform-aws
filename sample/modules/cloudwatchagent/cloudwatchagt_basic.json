@@ -1,6 +1,6 @@
 {
   "agent": {
-    "metrics_collection_interval": 10,
+    "metrics_collection_interval": 60,
     "run_as_user": "root"
   },
   "logs": {
@@ -20,11 +20,12 @@
   "metrics": {
     "namespace": "Develop/${instane_name}",
     "append_dimensions": {
-      "ImageId": "$${aws:ImageId}",
-      "InstanceId": "$${aws:InstanceId}",
-      "InstanceType": "$${aws:InstanceType}",
-      "AutoScalingGroupName": "$${aws:AutoScalingGroupName}"
+      "ImageId": "${aws:ImageId}",
+      "InstanceId": "${aws:InstanceId}",
+      "InstanceType": "${aws:InstanceType}",
+      "AutoScalingGroupName": "${aws:AutoScalingGroupName}"
     },
+    "aggregation_dimensions": [["AutoScalingGroupName"]],
     "metrics_collected": {
       "collectd": {
         "name_prefix": "collectd_metrics_",
@@ -46,24 +47,7 @@
         "service_address": ":8125",
         "metrics_collection_interval": 10,
         "metrics_aggregation_interval": 60
-      },
-      "procstat": [
-        {
-          "pattern": "java",
-          "measurement": [
-            "pid",
-            "memory_data",
-            "memory_rss",
-            "memory_stack",
-            "memory_swap",
-            "memory_vms",
-            "rlimit_memory_data_hard",
-            "rlimit_memory_data_soft",
-            "rlimit_memory_stack_hard",
-            "rlimit_memory_stack_soft"
-          ]
-        }
-      ]
+      }
     }
   }
 }

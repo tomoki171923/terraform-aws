@@ -16,3 +16,8 @@ output "security_group" {
     ssm2ec2   = aws_security_group.ssm2ec2
   }
 }
+output "computing" {
+  value = {
+    computing_ec2_single = module.computing_ec2_single
+  }
+}
