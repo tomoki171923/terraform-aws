@@ -20,6 +20,6 @@ resource "aws_cloudwatch_log_group" "ssm_console" {
 data "template_file" "cloudwatchagt_instance" {
   template = file("${path.module}/cloudwatch_agent/instance.json.tmp")
   vars = {
-    instane_name = "${var.base_name}"
+    base_name = "${var.base_name}"
   }
 }

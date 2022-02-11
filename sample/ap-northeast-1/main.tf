@@ -1,7 +1,7 @@
 module "sample" {
   source      = "../modules"
-  ec2_single  = true
+  ec2_single  = false
   ec2_clb     = false
-  ec2_alb     = false
+  ec2_alb     = true
   fargate_alb = false
 }
