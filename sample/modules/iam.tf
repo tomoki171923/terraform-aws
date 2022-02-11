@@ -19,7 +19,7 @@ module "role_ec2_ssm_managed" {
     "ec2.amazonaws.com"
   ]
   create_role       = true
-  role_name         = "${var.base_name}EC2SSMManaged"
+  role_name         = "EC2SSMManaged${var.base_name}"
   role_description  = "EC2 instance profile role managed by SSM"
   role_requires_mfa = false
 
@@ -35,7 +35,7 @@ module "policy_kms_core" {
   # remote module
   source = "terraform-aws-modules/iam/aws//modules/iam-policy"
 
-  name        = "${var.base_name}_kms_core_${data.aws_region.this.name}"
+  name        = "kms_core_${var.base_name}_${data.aws_region.this.name}"
   path        = "/"
   description = "kms keys core permission."
 

@@ -19,5 +19,6 @@ output "security_group" {
 output "computing" {
   value = {
     computing_ec2_single = module.computing_ec2_single
+    computing_ec2_alb    = module.computing_ec2_alb
   }
 }

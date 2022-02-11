@@ -22,13 +22,6 @@ locals {
     */
     nginx = "ami-0355105f8bbad21c2"
   }
-
-  instance_names = {
-    ec2_single = var.ec2_single == true ? "${var.base_name}-single-instance" : null
-    ec2_alb    = var.ec2_alb == true ? "${var.base_name}-alb-instance" : null
-    ec2_clb    = var.ec2_clb == true ? "${var.base_name}-clb-instance" : null
-  }
-
 }
 
 # ********************************* #
@@ -43,7 +36,24 @@ module "computing_ec2_single" {
     aws_security_group.ssm2ec2.id,
     aws_security_group.public.id
   ]
-  instance_name    = local.instance_names.ec2_single
+  instance_name    = "${var.base_name}-single-instance"
+  instance_profile = aws_iam_instance_profile.ssm_instance_profile.name
+  instance_ami     = local.amis.nginx
+  instance_type    = "t4g.nano"
+}
+
+module "computing_ec2_alb" {
+  count                 = var.ec2_alb == true ? 1 : 0
+  source                = "./computing/ec2_alb/"
+  base_name             = var.base_name
+  vpc_id                = module.vpc.vpc_id
+  subnet_ids_lb         = module.vpc.public_subnets
+  subnet_ids_computing  = module.vpc.private_subnets
+  security_group_ids_lb = [aws_security_group.web.id]
+  security_group_ids_computing = [
+    aws_security_group.ssm2ec2.id,
+    aws_security_group.private.id
+  ]
   instance_profile = aws_iam_instance_profile.ssm_instance_profile.name
   instance_ami     = local.amis.nginx
   instance_type    = "t4g.nano"

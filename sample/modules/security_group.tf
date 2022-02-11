@@ -70,14 +70,24 @@ resource "aws_security_group" "web" {
 # security group for servers on private space.
 resource "aws_security_group" "private" {
   name        = "${var.base_name}-private-sg"
-  description = "Allow SSL/TLS inbound traffic only from web security group."
+  description = "Allow HTTP & SSL/TLS inbound traffic only from web security group."
   vpc_id      = module.vpc.vpc_id
 
   ingress {
-    description     = "SSL/TLS"
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    # cidr_blocks = module.vpc.public_subnets_cidr_blocks
+    security_groups = [aws_security_group.web.id]
+  }
+
+  ingress {
+    description = "SSL/TLS"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    # cidr_blocks = module.vpc.public_subnets_cidr_blocks
     security_groups = [aws_security_group.web.id]
   }
 
