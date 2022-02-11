@@ -58,3 +58,19 @@ module "computing_ec2_alb" {
   instance_ami     = local.amis.nginx
   instance_type    = "t4g.nano"
 }
+
+module "computing_ec2_clb" {
+  count                 = var.ec2_clb == true ? 1 : 0
+  source                = "./computing/ec2_clb/"
+  base_name             = var.base_name
+  subnet_ids_lb         = module.vpc.public_subnets
+  subnet_ids_computing  = module.vpc.private_subnets
+  security_group_ids_lb = [aws_security_group.web.id]
+  security_group_ids_computing = [
+    aws_security_group.ssm2ec2.id,
+    aws_security_group.private.id
+  ]
+  instance_profile = aws_iam_instance_profile.ssm_instance_profile.name
+  instance_ami     = local.amis.nginx
+  instance_type    = "t4g.nano"
+}

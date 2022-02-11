@@ -40,7 +40,7 @@ resource "aws_lb_listener" "this" {
 # address SSL.
 data "aws_acm_certificate" "this" {
   domain   = "*.mydomain12345.net"
-  statuses = ["AMAZON_ISSUED"]
+  statuses = ["ISSUED"]
 }
 
 # attach certificate to alb
