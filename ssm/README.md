@@ -1,22 +1,10 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**
-
-- [SSM](#ssm)
-  - [Quick Setup](#quick-setup)
-  - [Session Manager](#session-manager)
-    - [Set session log](#set-session-log)
-    - [from AWS Console to EC2](#from-aws-console-to-ec2)
-    - [from Local to EC2](#from-local-to-ec2)
-  - [Cloudwatch Agent](#cloudwatch-agent)
-    - [install collected on EC2](#install-collected-on-ec2)
-    - [update Cloudwatch Agent config](#update-cloudwatch-agent-config)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 # SSM
 
 <https://ap-northeast-1.console.aws.amazon.com/systems-manager/home?region=ap-northeast-1>
+
+## Install SSM Agent
+
+<https://docs.aws.amazon.com/systems-manager/latest/userguide/agent-install-al2.html>
 
 ## Quick Setup
 

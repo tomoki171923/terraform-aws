@@ -1,12 +1,12 @@
 # *********** Variables *********** #
-variable "base_name" {
-  type = string
-}
 variable "subnet_id" {
   type = string
 }
 variable "security_group_ids" {
   type = list(string)
+}
+variable "instance_name" {
+  type = string
 }
 variable "instance_profile" {
   type = string
