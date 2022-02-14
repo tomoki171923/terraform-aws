@@ -18,7 +18,16 @@ output "security_group" {
 }
 output "computing" {
   value = {
-    computing_ec2_single = module.computing_ec2_single
-    computing_ec2_alb    = module.computing_ec2_alb
+    ec2_single  = module.computing_ec2_single
+    ec2_alb     = module.computing_ec2_alb
+    ec2_clb     = module.computing_ec2_clb
+    fargate_alb = module.computing_fargate_alb
+  }
+}
+
+output "ecr" {
+  value = {
+    repository       = aws_ecr_repository.this
+    lifecycle_policy = aws_ecr_lifecycle_policy.this
   }
 }

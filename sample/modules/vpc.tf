@@ -11,7 +11,7 @@ module "vpc" {
   name       = "${var.base_name}-vpc"
   cidr       = "10.101.0.0/16"
 
-  azs              = ["ap-northeast-1a", "ap-northeast-1c"]
+  azs              = ["${data.aws_region.this.name}a", "${data.aws_region.this.name}c"]
   private_subnets  = ["10.101.1.0/24", "10.101.2.0/24"]
   public_subnets   = ["10.101.11.0/24", "10.101.12.0/24"]
   database_subnets = ["10.101.21.0/24", "10.101.22.0/24"]
@@ -58,7 +58,7 @@ module "vpc" {
 resource "aws_subnet" "vpc_endpoint_a" {
   vpc_id            = module.vpc.vpc_id
   cidr_block        = "10.101.31.0/24"
-  availability_zone = "ap-northeast-1a"
+  availability_zone = "${data.aws_region.this.name}a"
   tags = {
     Name        = "${var.base_name}-vpc-endpoint-a-subnet"
     Terraform   = "true"
@@ -68,7 +68,7 @@ resource "aws_subnet" "vpc_endpoint_a" {
 resource "aws_subnet" "vpc_endpoint_c" {
   vpc_id            = module.vpc.vpc_id
   cidr_block        = "10.101.32.0/24"
-  availability_zone = "ap-northeast-1c"
+  availability_zone = "${data.aws_region.this.name}c"
   tags = {
     Name        = "${var.base_name}-vpc-endpoint-c-subnet"
     Terraform   = "true"
