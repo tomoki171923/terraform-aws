@@ -74,3 +74,23 @@ module "computing_ec2_clb" {
   instance_ami     = local.amis.nginx
   instance_type    = "t4g.nano"
 }
+
+module "computing_fargate_alb" {
+  count                 = var.fargate_alb == true ? 1 : 0
+  source                = "./computing/fargate_alb/"
+  base_name             = var.base_name
+  vpc_id                = module.vpc.vpc_id
+  subnet_ids_lb         = module.vpc.public_subnets
+  subnet_ids_computing  = module.vpc.private_subnets
+  security_group_ids_lb = [aws_security_group.web.id]
+  security_group_ids_computing = [
+    aws_security_group.ssm2ec2.id,
+    aws_security_group.private.id
+  ]
+  aws_ecr_repository_url = aws_ecr_repository.this.repository_url
+  aws_region             = data.aws_region.this.name
+  execution_role_arn     = module.iam_role_ecs_task_exec.iam_role_arn
+  task_role_arn          = module.iam_role_ecs_task.iam_role_arn
+  container_name         = var.base_name
+  container_port         = 80
+}
