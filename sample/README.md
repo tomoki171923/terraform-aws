@@ -1,3 +1,13 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Sample Computing](#sample-computing)
+  - [EC2](#ec2)
+  - [ECS Fargate](#ecs-fargate)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Sample Computing
 
 Terraform Samples for a computing like EC2, AutoScalingGroup, ECS, Fargate.
