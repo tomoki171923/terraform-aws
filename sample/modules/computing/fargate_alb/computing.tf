@@ -102,7 +102,7 @@ data "template_file" "task_definition" {
   vars = {
     ecs_cluster_name = "${var.base_name}-ecs-cluster"
     ecs_service_name = "${var.base_name}-ecs-service"
-    docker_image_url = "${var.aws_ecr_repository_url}:1.0.0"
+    docker_image_url = "${var.aws_ecr_repository_url}:web_1"
     container_name   = var.container_name
     container_port   = var.container_port
     region           = var.aws_region
