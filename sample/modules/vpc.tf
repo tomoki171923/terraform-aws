@@ -54,6 +54,66 @@ module "vpc" {
   }
 }
 
+# ********************************* #
+# ecs task subnet
+# ********************************* #
+# These subnets are exclusively for ecs task.
+resource "aws_subnet" "ecs_task_a" {
+  vpc_id            = module.vpc.vpc_id
+  cidr_block        = "10.101.3.0/24"
+  availability_zone = "${data.aws_region.this.name}a"
+  tags = {
+    Name        = "${var.base_name}-ecs-task-a-subnet"
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+resource "aws_subnet" "ecs_task_c" {
+  vpc_id            = module.vpc.vpc_id
+  cidr_block        = "10.101.4.0/24"
+  availability_zone = "${data.aws_region.this.name}c"
+  tags = {
+    Name        = "${var.base_name}-ecs-task-c-subnet"
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+# TODO: private linkに修正
+# https://aws.amazon.com/jp/premiumsupport/knowledge-center/ecs-pull-container-error/
+resource "aws_route_table" "ecs_task_a" {
+  vpc_id = module.vpc.vpc_id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = module.vpc.igw_id
+  }
+  tags = {
+    Name = "${var.base_name}-ecs-task-a"
+  }
+}
+resource "aws_route_table" "ecs_task_c" {
+  vpc_id = module.vpc.vpc_id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = module.vpc.igw_id
+  }
+  tags = {
+    Name = "${var.base_name}-ecs-task-c"
+  }
+}
+resource "aws_route_table_association" "ecs_task_a_igw" {
+  subnet_id      = aws_subnet.ecs_task_a.id
+  route_table_id = aws_route_table.ecs_task_a.id
+}
+resource "aws_route_table_association" "ecs_task_c_igw" {
+  subnet_id      = aws_subnet.ecs_task_c.id
+  route_table_id = aws_route_table.ecs_task_c.id
+}
+
+# ********************************* #
+# vpc endpoint
+# ref: https://github.com/terraform-aws-modules/terraform-aws-vpc/blob/master/examples/complete-vpc/main.tf
+# ********************************* #
+
 # These subnets are exclusively for vpc endpoints.
 resource "aws_subnet" "vpc_endpoint_a" {
   vpc_id            = module.vpc.vpc_id
@@ -73,5 +133,153 @@ resource "aws_subnet" "vpc_endpoint_c" {
     Name        = "${var.base_name}-vpc-endpoint-c-subnet"
     Terraform   = "true"
     Environment = "dev"
+  }
+}
+
+module "endpoints" {
+  source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
+  version = "3.12.0"
+
+  vpc_id             = module.vpc.vpc_id
+  security_group_ids = [module.vpc.default_security_group_id]
+
+  endpoints = {
+    // for s3
+    s3 = {
+      service = "s3"
+      tags    = { Name = "${var.base_name}-s3-vpc-endpoint" }
+      policy  = data.aws_iam_policy_document.access_ecr_buckets.json
+    },
+    // for ssm agent
+    ec2messages = {
+      service             = "ec2messages"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      tags                = { Name = "${var.base_name}-ec2messages-vpc-endpoint" }
+    },
+    // for ssm agent
+    ssm = {
+      service             = "ssm"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      security_group_ids  = [aws_security_group.vpc2tls.id]
+      tags                = { Name = "${var.base_name}-ssm-vpc-endpoint" }
+    },
+    // for ssm agent
+    ssmmessages = {
+      service             = "ssmmessages"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      tags                = { Name = "${var.base_name}-ssmmessages-vpc-endpoint" }
+    },
+    // for cloudwatch agent
+    ec2 = {
+      service             = "ec2"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      tags                = { Name = "${var.base_name}-ec2-vpc-endpoint" }
+    },
+    // for cloudwatch agent
+    logs = {
+      service             = "logs"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      tags                = { Name = "${var.base_name}-logs-vpc-endpoint" }
+    },
+    // for cloudwatch agent
+    monitoring = {
+      service             = "monitoring"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      tags                = { Name = "${var.base_name}-monitoring-vpc-endpoint" }
+    },
+    // for ecs
+    // https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/vpc-endpoints.html
+    ecs = {
+      service             = "ecs"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      tags                = { Name = "${var.base_name}-ecr-vpc-endpoint" }
+    },
+    // for ecs
+    // https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/vpc-endpoints.html
+    ecs_agent = {
+      service             = "ecs-agent"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      tags                = { Name = "${var.base_name}-ecs_agent-vpc-endpoint" }
+    },
+    // for ecs
+    // https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/vpc-endpoints.html
+    ecs_telemetry = {
+      service             = "ecs-telemetry"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      tags                = { Name = "${var.base_name}-ecs_telemetry-vpc-endpoint" }
+    },
+    // for ecs
+    ecr_api = {
+      service             = "ecr.api"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      # TODO: subnet に修正
+      security_group_ids = [aws_security_group.vpc2tls.id]
+      tags               = { Name = "${var.base_name}-ecr_api-vpc-endpoint" }
+    },
+    // for ecs
+    ecr_dkr = {
+      service             = "ecr.dkr"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      # TODO: subnet に修正
+      security_group_ids = [aws_security_group.vpc2tls.id]
+      tags               = { Name = "${var.base_name}-ecr_dkr-vpc-endpoint" }
+    },
+    // for kms
+    kms = {
+      service             = "kms"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      # TODO: subnet に修正
+      security_group_ids = [aws_security_group.vpc2tls.id]
+      tags               = { Name = "${var.base_name}-kms-vpc-endpoint" }
+    },
+    // for lambda
+    lambda = {
+      service             = "lambda"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      tags                = { Name = "${var.base_name}-lambda-vpc-endpoint" }
+    },
+    // for secretsmanager
+    lambda = {
+      service             = "secretsmanager"
+      private_dns_enabled = true
+      subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
+      security_group_ids  = [aws_security_group.vpc2tls.id]
+      tags                = { Name = "${var.base_name}-secretsmanager-vpc-endpoint" }
+    },
+  }
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+
+# allow access to ecr buckets.
+# https://aws.amazon.com/jp/premiumsupport/knowledge-center/ecs-ecr-docker-image-error/
+data "aws_iam_policy_document" "access_ecr_buckets" {
+  statement {
+    sid     = "allow-access-to-ecr-bucket-${data.aws_region.this.name}"
+    effect  = "Allow"
+    actions = ["s3:*"]
+    resources = [
+      "arn:aws:s3:::prod-${data.aws_region.this.name}-starport-layer-bucket/*"
+    ]
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
   }
 }
