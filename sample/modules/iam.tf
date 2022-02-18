@@ -83,6 +83,13 @@ data "aws_iam_policy" "AmazonSSMPatchAssociation" {
   name = "AmazonSSMPatchAssociation"
 }
 
+# TODO: 削除
+data "aws_iam_policy" "AdministratorAccess" {
+  name = "AdministratorAccess"
+}
+
+
+
 
 /****************************
   ECS IAM Role
@@ -95,7 +102,10 @@ module "iam_role_ecs_task_exec" {
   version = "4.11.0"
 
   trusted_role_services = [
-    "ecs-tasks.amazonaws.com"
+    "ecs-tasks.amazonaws.com",
+    "ecs.amazonaws.com",
+    "ec2.amazonaws.com",
+    "application-autoscaling.amazonaws.com"
   ]
   create_role       = true
   role_name         = "ECSTaskExecRole_${var.base_name}"
@@ -104,16 +114,20 @@ module "iam_role_ecs_task_exec" {
 
   custom_role_policy_arns = [
     data.aws_iam_policy.AmazonECSTaskExecutionRolePolicy.arn,
+    data.aws_iam_policy.AmazonS3FullAccess.arn,
+    # TODO: 削除
+    data.aws_iam_policy.AdministratorAccess.arn
   ]
 }
 
-# for container on ECS.
+# for a container on ECS.
 module "iam_role_ecs_task" {
   # remote module
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "4.11.0"
 
   trusted_role_services = [
+    "ecs.amazonaws.com",
     "ecs-tasks.amazonaws.com"
   ]
   create_role       = true
@@ -123,6 +137,8 @@ module "iam_role_ecs_task" {
 
   custom_role_policy_arns = [
     data.aws_iam_policy.AmazonS3FullAccess.arn,
+    # TODO: 削除
+    data.aws_iam_policy.AdministratorAccess.arn
   ]
 }
 

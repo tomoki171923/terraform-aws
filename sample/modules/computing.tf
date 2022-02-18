@@ -33,7 +33,7 @@ module "computing_ec2_single" {
   source    = "./computing/ec2_single/"
   subnet_id = module.vpc.public_subnets[0]
   security_group_ids = [
-    aws_security_group.ssm2ec2.id,
+    aws_security_group.tls2vpc.id,
     aws_security_group.public.id
   ]
   instance_name    = "${var.base_name}-single-instance"
@@ -51,7 +51,7 @@ module "computing_ec2_alb" {
   subnet_ids_computing  = module.vpc.private_subnets
   security_group_ids_lb = [aws_security_group.web.id]
   security_group_ids_computing = [
-    aws_security_group.ssm2ec2.id,
+    aws_security_group.tls2vpc.id,
     aws_security_group.private.id
   ]
   instance_profile = aws_iam_instance_profile.ssm_instance_profile.name
@@ -67,7 +67,7 @@ module "computing_ec2_clb" {
   subnet_ids_computing  = module.vpc.private_subnets
   security_group_ids_lb = [aws_security_group.web.id]
   security_group_ids_computing = [
-    aws_security_group.ssm2ec2.id,
+    aws_security_group.tls2vpc.id,
     aws_security_group.private.id
   ]
   instance_profile = aws_iam_instance_profile.ssm_instance_profile.name
@@ -76,15 +76,18 @@ module "computing_ec2_clb" {
 }
 
 module "computing_fargate_alb" {
-  count                 = var.fargate_alb == true ? 1 : 0
-  source                = "./computing/fargate_alb/"
-  base_name             = var.base_name
-  vpc_id                = module.vpc.vpc_id
-  subnet_ids_lb         = module.vpc.public_subnets
-  subnet_ids_computing  = module.vpc.private_subnets
+  count         = var.fargate_alb == true ? 1 : 0
+  source        = "./computing/fargate_alb/"
+  base_name     = var.base_name
+  vpc_id        = module.vpc.vpc_id
+  subnet_ids_lb = module.vpc.public_subnets
+  subnet_ids_computing = [
+    aws_subnet.ecs_task_a.id,
+    aws_subnet.ecs_task_c.id
+  ]
   security_group_ids_lb = [aws_security_group.web.id]
   security_group_ids_computing = [
-    aws_security_group.ssm2ec2.id,
+    aws_security_group.tls2vpc.id,
     aws_security_group.private.id
   ]
   aws_ecr_repository_url = aws_ecr_repository.this.repository_url

@@ -28,9 +28,10 @@ resource "aws_ecs_service" "this" {
   launch_type                        = "FARGATE"
 
   network_configuration {
-    subnets          = var.subnet_ids_computing
-    security_groups  = var.security_group_ids_computing
-    assign_public_ip = false
+    subnets         = var.subnet_ids_computing
+    security_groups = var.security_group_ids_computing
+    // https://stackoverflow.com/questions/67301268/aws-fargate-resourceinitializationerror-unable-to-pull-secrets-or-registry-auth
+    assign_public_ip = true
   }
 
   load_balancer {
@@ -39,10 +40,14 @@ resource "aws_ecs_service" "this" {
     target_group_arn = aws_lb_target_group.this.arn
   }
 
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
 
-  platform_version       = "1.4.0"
+  platform_version       = "LATEST"
   enable_execute_command = false
-  wait_for_steady_state  = true
+  //wait_for_steady_state  = true
 
   tags = {
     Name        = "${var.base_name}-ecs-service"
@@ -74,37 +79,55 @@ resource "aws_lb_target_group" "this" {
   lifecycle {
     create_before_destroy = true
   }
-  # deregistration_delay = 60
+  deregistration_delay = 60
 }
 
 resource "aws_ecs_task_definition" "this" {
-  container_definitions    = data.template_file.task_definition.rendered
   family                   = "${var.base_name}-ecs-service"
-  cpu                      = 256
-  memory                   = 512
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
+  cpu                      = 256
+  memory                   = 512
   execution_role_arn       = var.execution_role_arn
   task_role_arn            = var.task_role_arn
-  lifecycle {
-    ignore_changes = [
-      container_definitions,
-      family,
-      cpu,
-      memory
-    ]
-  }
+  container_definitions    = <<TASK_DEFINITION
+[
+    {
+        "image": "${var.aws_ecr_repository_url}:web_1",
+        "name": "${var.container_name}",
+        "command": [],
+        "cpu": 256,
+        "memory": 512,
+        "entryPoint": [],
+        "environment": [
+            {
+                "name": "Environment",
+                "value": "dev"
+            }
+        ],
+        "essential": true,
+        "portMappings": [
+            {
+                "containerPort": ${var.container_port},
+                "hostPort": ${var.container_port},
+                "protocol": "tcp"
+            }
+        ],
+        "mountPoints": [],
+        "volumesFrom": []
+    }
+]
+TASK_DEFINITION
 }
 
-data "template_file" "task_definition" {
-  template = file("${path.module}/task_definition.json.tmp")
-
-  vars = {
-    ecs_cluster_name = "${var.base_name}-ecs-cluster"
-    ecs_service_name = "${var.base_name}-ecs-service"
-    docker_image_url = "${var.aws_ecr_repository_url}:web_1"
-    container_name   = var.container_name
-    container_port   = var.container_port
-    region           = var.aws_region
-  }
-}
+/* TODO: 修正
+,
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/aws//ecs/${var.base_name}-ecs-cluster",
+                "awslogs-region": "${var.aws_region}",
+                "awslogs-stream-prefix": "${var.base_name}-ecs-service"
+            }
+        }
+*/
