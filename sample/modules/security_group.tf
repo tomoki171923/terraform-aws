@@ -107,8 +107,8 @@ resource "aws_security_group" "private" {
 }
 
 # ssm permission to vpc endpoints.
-resource "aws_security_group" "vpc2tls" {
-  name        = "${var.base_name}-vpc2tls-sg"
+resource "aws_security_group" "allowTlsFromVpc" {
+  name        = "${var.base_name}-allowTlsFromVpc-sg"
   description = "Allow SSL/TLS inbound traffic from vpc"
   vpc_id      = module.vpc.vpc_id
 
@@ -122,15 +122,15 @@ resource "aws_security_group" "vpc2tls" {
   }
 
   tags = {
-    Name        = "${var.base_name}-vpc2tls-sg"
+    Name        = "${var.base_name}-allowTlsFromVpc-sg"
     Terraform   = "true"
     Environment = "dev"
   }
 }
 
-resource "aws_security_group" "sub_privates2tls" {
-  name        = "${var.base_name}-sub_privates2tls-sg"
-  description = "Allow SSL/TLS inbound traffic from private-subnet"
+resource "aws_security_group" "allowTlsFromEcstaskSubnets" {
+  name        = "${var.base_name}-allowTlsFromEcstaskSubnets-sg"
+  description = "Allow SSL/TLS inbound traffic from ecs_task subnets"
   vpc_id      = module.vpc.vpc_id
 
   ingress {
@@ -138,20 +138,20 @@ resource "aws_security_group" "sub_privates2tls" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = module.vpc.private_subnets_cidr_blocks
+    cidr_blocks = [aws_subnet.ecs_task_a.cidr_block, aws_subnet.ecs_task_c.cidr_block]
     #ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
   }
 
   tags = {
-    Name        = "${var.base_name}-sub_privates2tls-sg"
+    Name        = "${var.base_name}-allowTlsFromEcstaskSubnets-sg"
     Terraform   = "true"
     Environment = "dev"
   }
 }
 
 # ssm permission to ec2 instances.
-resource "aws_security_group" "tls2vpc" {
-  name        = "${var.base_name}-tls2vpc-sg"
+resource "aws_security_group" "allowTlsToVpc" {
+  name        = "${var.base_name}-allowTlsToVpc-sg"
   description = "Allow https outbound traffic to vpc endpoints"
   vpc_id      = module.vpc.vpc_id
 
@@ -165,15 +165,15 @@ resource "aws_security_group" "tls2vpc" {
   }
 
   tags = {
-    Name        = "${var.base_name}-tls2vpc-sg"
+    Name        = "${var.base_name}-allowTlsToVpc-sg"
     Terraform   = "true"
     Environment = "dev"
   }
 }
 
-resource "aws_security_group" "tls2sub_privates" {
-  name        = "${var.base_name}-tls2sub_privates-sg"
-  description = "Allow SSL/TLS inbound traffic from private-subnet"
+resource "aws_security_group" "allowTlsToEcstaskSubnets" {
+  name        = "${var.base_name}-allowTlsToEcstaskSubnets-sg"
+  description = "Allow SSL/TLS inbound traffic from ecs_task subnets"
   vpc_id      = module.vpc.vpc_id
 
   egress {
@@ -181,12 +181,12 @@ resource "aws_security_group" "tls2sub_privates" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = module.vpc.private_subnets_cidr_blocks
+    cidr_blocks = [aws_subnet.ecs_task_a.cidr_block, aws_subnet.ecs_task_c.cidr_block]
     #ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
   }
 
   tags = {
-    Name        = "${var.base_name}-tls2sub_privates-sg"
+    Name        = "${var.base_name}-allowTlsToEcstaskSubnets-sg"
     Terraform   = "true"
     Environment = "dev"
   }

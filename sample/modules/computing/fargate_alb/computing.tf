@@ -119,16 +119,21 @@ resource "aws_ecs_task_definition" "this" {
     }
 ]
 TASK_DEFINITION
+  depends_on = [
+    aws_cloudwatch_log_group.this,
+  ]
 }
 
-/* TODO: 修正
-,
-        "logConfiguration": {
-            "logDriver": "awslogs",
-            "options": {
-                "awslogs-group": "/aws//ecs/${var.base_name}-ecs-cluster",
-                "awslogs-region": "${var.aws_region}",
-                "awslogs-stream-prefix": "${var.base_name}-ecs-service"
-            }
-        }
-*/
+resource "aws_cloudwatch_log_group" "this" {
+  name              = "/aws//ecs/${var.base_name}-ecs-cluster"
+  retention_in_days = 30
+}
+
+#         "logConfiguration": {
+#             "logDriver": "awslogs",
+#             "options": {
+#                 "awslogs-group": "${aws_cloudwatch_log_group.this.name}",
+#                 "awslogs-region": "${var.aws_region}",
+#                 "awslogs-stream-prefix": "${var.base_name}-ecs-service"
+#             }
+#         }

@@ -162,7 +162,7 @@ module "endpoints" {
       service             = "ssm"
       private_dns_enabled = true
       subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
-      security_group_ids  = [aws_security_group.vpc2tls.id]
+      security_group_ids  = [aws_security_group.allowTlsFromVpc.id]
       tags                = { Name = "${var.base_name}-ssm-vpc-endpoint" }
     },
     // for ssm agent
@@ -217,32 +217,31 @@ module "endpoints" {
       subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
       tags                = { Name = "${var.base_name}-ecs_telemetry-vpc-endpoint" }
     },
-    // for ecs
+    // for ecs fargate
+    // https://docs.aws.amazon.com/ja_jp/AmazonECR/latest/userguide/vpc-endpoints.html
     ecr_api = {
       service             = "ecr.api"
       private_dns_enabled = true
       subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
-      # TODO: subnet に修正
-      security_group_ids = [aws_security_group.vpc2tls.id]
-      tags               = { Name = "${var.base_name}-ecr_api-vpc-endpoint" }
+      security_group_ids  = [aws_security_group.allowTlsFromEcstaskSubnets.id]
+      tags                = { Name = "${var.base_name}-ecr_api-vpc-endpoint" }
     },
-    // for ecs
+    // for ecs fargate
+    // https://docs.aws.amazon.com/ja_jp/AmazonECR/latest/userguide/vpc-endpoints.html
     ecr_dkr = {
       service             = "ecr.dkr"
       private_dns_enabled = true
       subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
-      # TODO: subnet に修正
-      security_group_ids = [aws_security_group.vpc2tls.id]
-      tags               = { Name = "${var.base_name}-ecr_dkr-vpc-endpoint" }
+      security_group_ids  = [aws_security_group.allowTlsFromEcstaskSubnets.id]
+      tags                = { Name = "${var.base_name}-ecr_dkr-vpc-endpoint" }
     },
     // for kms
     kms = {
       service             = "kms"
       private_dns_enabled = true
       subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
-      # TODO: subnet に修正
-      security_group_ids = [aws_security_group.vpc2tls.id]
-      tags               = { Name = "${var.base_name}-kms-vpc-endpoint" }
+      security_group_ids  = [aws_security_group.allowTlsFromVpc.id]
+      tags                = { Name = "${var.base_name}-kms-vpc-endpoint" }
     },
     // for lambda
     lambda = {
@@ -256,7 +255,7 @@ module "endpoints" {
       service             = "secretsmanager"
       private_dns_enabled = true
       subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
-      security_group_ids  = [aws_security_group.vpc2tls.id]
+      security_group_ids  = [aws_security_group.allowTlsFromVpc.id]
       tags                = { Name = "${var.base_name}-secretsmanager-vpc-endpoint" }
     },
   }
@@ -280,6 +279,27 @@ data "aws_iam_policy_document" "access_ecr_buckets" {
     principals {
       type        = "*"
       identifiers = ["*"]
+    }
+  }
+}
+
+# allow access to images on ecr.
+# https://docs.aws.amazon.com/ja_jp/AmazonECR/latest/userguide/vpc-endpoints.html#ecr-vpc-endpoint-policy
+data "aws_iam_policy_document" "access_ecr_images" {
+  statement {
+    sid    = "allow-access-to-images-on-ecr-for-${module.iam_role_ecs_task_exec.iam_role_name}"
+    effect = "Allow"
+    actions = [
+      "ecr:BatchGetImage",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:GetAuthorizationToken"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = [module.iam_role_ecs_task_exec.iam_role_arn]
     }
   }
 }
