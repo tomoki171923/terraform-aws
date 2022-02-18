@@ -120,8 +120,6 @@ module "iam_role_ecs_task_exec" {
 
   trusted_role_services = [
     "ecs-tasks.amazonaws.com",
-    "ecs.amazonaws.com",
-    "ec2.amazonaws.com",
     "application-autoscaling.amazonaws.com"
   ]
   create_role       = true
@@ -137,8 +135,6 @@ module "iam_role_ecs_task_exec" {
     module.policy_secretsmanager_core.arn,
     # https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/task_execution_IAM_role.html#task-execution-ecr-conditionkeys
     data.aws_iam_policy.AWSAppRunnerServicePolicyForECRAccess.arn
-    # TODO: 削除
-    # data.aws_iam_policy.AdministratorAccess.arn
   ]
 }
 
@@ -167,5 +163,3 @@ data "aws_iam_policy" "AmazonECSTaskExecutionRolePolicy" {
 data "aws_iam_policy" "AmazonS3FullAccess" {
   name = "AmazonS3FullAccess"
 }
-
-# https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/task_execution_IAM_role.html#task-execution-private-auth

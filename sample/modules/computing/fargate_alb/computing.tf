@@ -31,6 +31,7 @@ resource "aws_ecs_service" "this" {
     subnets         = var.subnet_ids_computing
     security_groups = var.security_group_ids_computing
     // https://stackoverflow.com/questions/67301268/aws-fargate-resourceinitializationerror-unable-to-pull-secrets-or-registry-auth
+    // assign_public_ip = false
     assign_public_ip = true
   }
 
@@ -47,7 +48,7 @@ resource "aws_ecs_service" "this" {
 
   platform_version       = "LATEST"
   enable_execute_command = false
-  //wait_for_steady_state  = true
+  wait_for_steady_state  = true
 
   tags = {
     Name        = "${var.base_name}-ecs-service"

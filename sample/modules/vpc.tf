@@ -222,24 +222,27 @@ module "endpoints" {
       service             = "ecr.api"
       private_dns_enabled = true
       subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
-      security_group_ids  = [aws_security_group.vpc2tls.id]
-      tags                = { Name = "${var.base_name}-ecr_api-vpc-endpoint" }
+      # TODO: subnet に修正
+      security_group_ids = [aws_security_group.vpc2tls.id]
+      tags               = { Name = "${var.base_name}-ecr_api-vpc-endpoint" }
     },
     // for ecs
     ecr_dkr = {
       service             = "ecr.dkr"
       private_dns_enabled = true
       subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
-      security_group_ids  = [aws_security_group.vpc2tls.id]
-      tags                = { Name = "${var.base_name}-ecr_dkr-vpc-endpoint" }
+      # TODO: subnet に修正
+      security_group_ids = [aws_security_group.vpc2tls.id]
+      tags               = { Name = "${var.base_name}-ecr_dkr-vpc-endpoint" }
     },
     // for kms
     kms = {
       service             = "kms"
       private_dns_enabled = true
       subnet_ids          = [aws_subnet.vpc_endpoint_a.id, aws_subnet.vpc_endpoint_c.id]
-      security_group_ids  = [aws_security_group.vpc2tls.id]
-      tags                = { Name = "${var.base_name}-kms-vpc-endpoint" }
+      # TODO: subnet に修正
+      security_group_ids = [aws_security_group.vpc2tls.id]
+      tags               = { Name = "${var.base_name}-kms-vpc-endpoint" }
     },
     // for lambda
     lambda = {
