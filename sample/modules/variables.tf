@@ -7,6 +7,10 @@ variable "nat_gateway" {
   type    = bool
   default = false
 }
+variable "vpc_endpoints" {
+  type    = bool
+  default = false
+}
 variable "ec2_single" {
   type    = bool
   default = false

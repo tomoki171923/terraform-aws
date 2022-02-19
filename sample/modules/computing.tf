@@ -33,7 +33,7 @@ module "computing_ec2_single" {
   source    = "./computing/ec2_single/"
   subnet_id = module.vpc.public_subnets[0]
   security_group_ids = [
-    aws_security_group.tls2vpc.id,
+    aws_security_group.allowTlsToVpc.id,
     aws_security_group.public.id
   ]
   instance_name    = "${var.base_name}-single-instance"
@@ -51,8 +51,8 @@ module "computing_ec2_alb" {
   subnet_ids_computing  = module.vpc.private_subnets
   security_group_ids_lb = [aws_security_group.web.id]
   security_group_ids_computing = [
-    aws_security_group.tls2vpc.id,
-    aws_security_group.private.id
+    aws_security_group.allowTlsToVpc.id,
+    aws_security_group.allowHttpTlsFromWebSg.id
   ]
   instance_profile = aws_iam_instance_profile.ssm_instance_profile.name
   instance_ami     = local.amis.nginx
@@ -67,8 +67,8 @@ module "computing_ec2_clb" {
   subnet_ids_computing  = module.vpc.private_subnets
   security_group_ids_lb = [aws_security_group.web.id]
   security_group_ids_computing = [
-    aws_security_group.tls2vpc.id,
-    aws_security_group.private.id
+    aws_security_group.allowTlsToVpc.id,
+    aws_security_group.allowHttpTlsFromWebSg.id
   ]
   instance_profile = aws_iam_instance_profile.ssm_instance_profile.name
   instance_ami     = local.amis.nginx
@@ -87,8 +87,10 @@ module "computing_fargate_alb" {
   ]
   security_group_ids_lb = [aws_security_group.web.id]
   security_group_ids_computing = [
-    aws_security_group.tls2vpc.id,
-    aws_security_group.private.id
+    aws_security_group.allowTlsToVpc.id,
+    aws_security_group.allowTlsFromVpc.id,
+    aws_security_group.allowHttpTlsFromWebSg.id,
+    aws_security_group.allowDnsToVpc.id
   ]
   aws_ecr_repository_url = aws_ecr_repository.this.repository_url
   aws_region             = data.aws_region.this.name

@@ -15,13 +15,13 @@ output "endpoints" {
 
 output "security_group" {
   value = {
-    public           = aws_security_group.public
-    web              = aws_security_group.web
-    private          = aws_security_group.private
-    vpc2tls          = aws_security_group.vpc2tls
-    sub_privates2tls = aws_security_group.sub_privates2tls
-    tls2vpc          = aws_security_group.tls2vpc
-    tls2sub_privates = aws_security_group.tls2sub_privates
+    public                     = aws_security_group.public
+    web                        = aws_security_group.web
+    allowHttpTlsFromWebSg      = aws_security_group.allowHttpTlsFromWebSg
+    allowTlsFromVpc            = aws_security_group.allowTlsFromVpc
+    allowTlsFromEcstaskSubnets = aws_security_group.allowTlsFromEcstaskSubnets
+    allowTlsToVpc              = aws_security_group.allowTlsToVpc
+    allowTlsToEcstaskSubnets   = aws_security_group.allowTlsToEcstaskSubnets
   }
 }
 output "computing" {
@@ -37,5 +37,22 @@ output "ecr" {
   value = {
     repository       = aws_ecr_repository.this
     lifecycle_policy = aws_ecr_lifecycle_policy.this
+  }
+}
+
+output "iam" {
+  value = {
+    instance_profile = {
+      ssm_instance_profile = aws_iam_instance_profile.ssm_instance_profile
+    }
+    role = {
+      ec2_ssm_managed = module.iam_role_ec2_ssm_managed
+      ecs_task_exec   = module.iam_role_ecs_task_exec
+      ecs_task        = module.iam_role_ecs_task
+    }
+    policy = {
+      kms_core            = module.iam_policy_kms_core
+      secretsmanager_core = module.iam_policy_secretsmanager_core
+    }
   }
 }
