@@ -17,7 +17,7 @@ output "security_group" {
   value = {
     public                     = aws_security_group.public
     web                        = aws_security_group.web
-    private                    = aws_security_group.private
+    allowHttpTlsFromWebSg      = aws_security_group.allowHttpTlsFromWebSg
     allowTlsFromVpc            = aws_security_group.allowTlsFromVpc
     allowTlsFromEcstaskSubnets = aws_security_group.allowTlsFromEcstaskSubnets
     allowTlsToVpc              = aws_security_group.allowTlsToVpc

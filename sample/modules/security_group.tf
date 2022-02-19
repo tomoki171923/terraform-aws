@@ -67,9 +67,9 @@ resource "aws_security_group" "web" {
   }
 }
 
-# security group for servers on private space.
-resource "aws_security_group" "private" {
-  name        = "${var.base_name}-private-sg"
+# security group for servers on allowHttpTlsFromWebSg space.
+resource "aws_security_group" "allowHttpTlsFromWebSg" {
+  name        = "${var.base_name}-allowHttpTlsFromWebSg-sg"
   description = "Allow HTTP & SSL/TLS inbound traffic only from web security group."
   vpc_id      = module.vpc.vpc_id
 
@@ -100,7 +100,7 @@ resource "aws_security_group" "private" {
   }
 
   tags = {
-    Name        = "${var.base_name}-private-sg"
+    Name        = "${var.base_name}-allowHttpTlsFromWebSg-sg"
     Terraform   = "true"
     Environment = "dev"
   }
@@ -152,7 +152,7 @@ resource "aws_security_group" "allowTlsFromEcstaskSubnets" {
 # ssm permission to ec2 instances.
 resource "aws_security_group" "allowTlsToVpc" {
   name        = "${var.base_name}-allowTlsToVpc-sg"
-  description = "Allow https outbound traffic to vpc endpoints"
+  description = "Allow SSL/TLS outbound traffic to vpc endpoints"
   vpc_id      = module.vpc.vpc_id
 
   egress {
@@ -187,6 +187,27 @@ resource "aws_security_group" "allowTlsToEcstaskSubnets" {
 
   tags = {
     Name        = "${var.base_name}-allowTlsToEcstaskSubnets-sg"
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+
+resource "aws_security_group" "allowDnsToVpc" {
+  name        = "${var.base_name}-allowDnsToVpc-sg"
+  description = "Allow DNS outbound traffic to vpc endpoints"
+  vpc_id      = module.vpc.vpc_id
+
+  egress {
+    description = "DNS"
+    from_port   = 53
+    to_port     = 53
+    protocol    = "tcp"
+    cidr_blocks = [module.vpc.vpc_cidr_block]
+    #ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
+  }
+
+  tags = {
+    Name        = "${var.base_name}-allowDnsToVpc-sg"
     Terraform   = "true"
     Environment = "dev"
   }

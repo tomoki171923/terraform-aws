@@ -84,7 +84,7 @@ resource "aws_lb_target_group" "this" {
 }
 
 resource "aws_ecs_task_definition" "this" {
-  family                   = "${var.base_name}-ecs-service"
+  family                   = "${var.base_name}-ecs-task"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = 256
