@@ -1,6 +1,7 @@
 /*********************************
   VPC
-    ref: https://github.com/terraform-aws-modules/terraform-aws-vpc/blob/master/examples/complete-vpc/main.tf
+    terraform reference:
+      https://github.com/terraform-aws-modules/terraform-aws-vpc/blob/master/examples/complete-vpc/main.tf
     pricing:
       https://aws.amazon.com/jp/vpc/pricing/
 *********************************/
@@ -59,8 +60,9 @@ module "vpc" {
 
 /*********************************
   vpc endpoint
-    ref: https://github.com/terraform-aws-modules/terraform-aws-vpc/blob/master/examples/complete-vpc/main.tf
-         https://github.com/terraform-aws-modules/terraform-aws-vpc/tree/master/modules/vpc-endpoints
+    terraform reference:
+      https://github.com/terraform-aws-modules/terraform-aws-vpc/blob/master/examples/complete-vpc/main.tf
+      https://github.com/terraform-aws-modules/terraform-aws-vpc/tree/master/modules/vpc-endpoints
     pricing:
       https://aws.amazon.com/jp/privatelink/pricing/
       type: Interface (tokyo)
@@ -125,7 +127,7 @@ module "endpoints" {
       service         = "s3"
       service_type    = "Gateway"
       route_table_ids = [aws_route_table.s3[0].id]
-      policy          = data.aws_iam_policy_document.allow_access_ecr_buckets.json
+      // policy          = data.aws_iam_policy_document.allow_access_ecr_buckets.json
       tags = {
         Name = "${var.base_name}-s3-vpc-endpoint"
       }
@@ -144,7 +146,6 @@ module "endpoints" {
     #   service             = "ssm"
     #   private_dns_enabled = true
     #   subnet_ids          = [aws_subnet.vpc_endpoint_a[0].id, aws_subnet.vpc_endpoint_c[0].id]
-    #   security_group_ids  = [aws_security_group.allowTlsFromVpc.id]
     #   tags = {
     #     Name = "${var.base_name}-ssm-vpc-endpoint"
     #   }
@@ -167,7 +168,7 @@ module "endpoints" {
     #     Name = "${var.base_name}-ec2-vpc-endpoint"
     #   }
     # },
-    // for cloudwatch agent
+    // for cloudwatch agent / ecs log
     logs = {
       service             = "logs"
       private_dns_enabled = true
@@ -221,10 +222,7 @@ module "endpoints" {
       service             = "ecr.api"
       private_dns_enabled = true
       subnet_ids          = [aws_subnet.vpc_endpoint_a[0].id, aws_subnet.vpc_endpoint_c[0].id]
-      security_group_ids = [
-        aws_security_group.allowDnsToVpc.id
-      ]
-      policy = data.aws_iam_policy_document.allow_ecs_actions.json
+      // policy = data.aws_iam_policy_document.allow_ecs_actions.json
       tags = {
         Name = "${var.base_name}-ecr_api-vpc-endpoint"
       }
@@ -235,10 +233,7 @@ module "endpoints" {
       service             = "ecr.dkr"
       private_dns_enabled = true
       subnet_ids          = [aws_subnet.vpc_endpoint_a[0].id, aws_subnet.vpc_endpoint_c[0].id]
-      security_group_ids = [
-        aws_security_group.allowDnsToVpc.id
-      ]
-      policy = data.aws_iam_policy_document.allow_ecs_actions.json
+      // policy = data.aws_iam_policy_document.allow_ecs_actions.json
       tags = {
         Name = "${var.base_name}-ecr_dkr-vpc-endpoint"
       }
@@ -363,7 +358,9 @@ resource "aws_subnet" "ecs_task_c" {
     Environment = "dev"
   }
 }
-// case1. using internet gateway
+/*
+  case1. via internet gateway
+*/
 resource "aws_route_table" "ecs_task_a" {
   count  = var.vpc_endpoints == false ? 1 : 0
   vpc_id = module.vpc.vpc_id
@@ -401,8 +398,11 @@ resource "aws_route_table_association" "ecs_task_c_igw" {
   route_table_id = aws_route_table.ecs_task_c[0].id
 }
 
-// case2. using vpc-endpoints
-// https://aws.amazon.com/jp/premiumsupport/knowledge-center/ecs-pull-container-error/
+/*
+  case2. vpc-endpoints
+  https://aws.amazon.com/jp/premiumsupport/knowledge-center/ecs-pull-container-error/
+  https://aws.amazon.com/jp/premiumsupport/knowledge-center/ecs-pull-container-api-error-ecr/
+*/
 resource "aws_route_table_association" "s3_ecs_task_a" {
   count          = var.vpc_endpoints == true ? 1 : 0
   subnet_id      = aws_subnet.ecs_task_a.id
@@ -412,4 +412,14 @@ resource "aws_route_table_association" "s3_ecs_task_c" {
   count          = var.vpc_endpoints == true ? 1 : 0
   subnet_id      = aws_subnet.ecs_task_c.id
   route_table_id = aws_route_table.s3[0].id
+}
+resource "aws_route_table_association" "s3_vpc_endpoint_a" {
+  count          = var.vpc_endpoints == false ? 1 : 0
+  subnet_id      = aws_subnet.vpc_endpoint_a[0].id
+  route_table_id = aws_route_table.ecs_task_a[0].id
+}
+resource "aws_route_table_association" "s3_vpc_endpoint_c" {
+  count          = var.vpc_endpoints == false ? 1 : 0
+  subnet_id      = aws_subnet.vpc_endpoint_c[0].id
+  route_table_id = aws_route_table.ecs_task_c[0].id
 }
