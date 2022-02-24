@@ -24,7 +24,7 @@ module "iam_role_ec2_ssm_managed" {
     "ec2.amazonaws.com"
   ]
   create_role       = true
-  role_name         = "EC2SSMManaged${var.base_name}"
+  role_name         = "EC2SSMManaged_${var.base_name}"
   role_description  = "EC2 instance profile role managed by SSM"
   role_requires_mfa = false
 
@@ -32,7 +32,7 @@ module "iam_role_ec2_ssm_managed" {
     data.aws_iam_policy.AmazonSSMManagedInstanceCore.arn,
     data.aws_iam_policy.CloudWatchAgentServerPolicy.arn,
     data.aws_iam_policy.AmazonSSMPatchAssociation.arn,
-    module.policy_kms_core.arn,
+    module.iam_policy_kms_core.arn,
   ]
 }
 
@@ -40,7 +40,7 @@ module "iam_role_ec2_ssm_managed" {
 /*
     iam policy document
 */
-module "policy_kms_core" {
+module "iam_policy_kms_core" {
   # remote module
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
   version = "4.11.0"
@@ -66,7 +66,7 @@ data "aws_iam_policy_document" "kms_core" {
     ]
   }
 }
-module "policy_secretsmanager_core" {
+module "iam_policy_secretsmanager_core" {
   # remote module
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
   version = "4.11.0"
@@ -131,8 +131,8 @@ module "iam_role_ecs_task_exec" {
     data.aws_iam_policy.AmazonECSTaskExecutionRolePolicy.arn,
     data.aws_iam_policy.AmazonS3FullAccess.arn,
     # https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/task_execution_IAM_role.html#task-execution-private-auth
-    module.policy_kms_core.arn,
-    module.policy_secretsmanager_core.arn,
+    module.iam_policy_kms_core.arn,
+    module.iam_policy_secretsmanager_core.arn,
     # https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/task_execution_IAM_role.html#task-execution-ecr-conditionkeys
     data.aws_iam_policy.AWSAppRunnerServicePolicyForECRAccess.arn
   ]
