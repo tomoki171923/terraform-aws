@@ -90,12 +90,11 @@ module "computing_fargate_alb" {
     aws_security_group.allowTlsToVpc.id,
     aws_security_group.allowTlsFromVpc.id,
     aws_security_group.allowHttpTlsFromWebSg.id,
-    aws_security_group.allowDnsToVpc.id
   ]
   aws_ecr_repository_url = aws_ecr_repository.this.repository_url
   aws_region             = data.aws_region.this.name
   execution_role_arn     = module.iam_role_ecs_task_exec.iam_role_arn
   task_role_arn          = module.iam_role_ecs_task.iam_role_arn
-  container_name         = var.base_name
+  container_name         = "${var.base_name}_container"
   container_port         = 80
 }

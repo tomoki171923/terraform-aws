@@ -107,6 +107,14 @@ resource "aws_ecs_task_definition" "this" {
             }
         ],
         "essential": true,
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "${aws_cloudwatch_log_group.this.name}",
+                "awslogs-region": "${var.aws_region}",
+                "awslogs-stream-prefix": "${var.base_name}-ecs-service"
+            }
+        },
         "portMappings": [
             {
                 "containerPort": ${var.container_port},
@@ -125,15 +133,6 @@ TASK_DEFINITION
 }
 
 resource "aws_cloudwatch_log_group" "this" {
-  name              = "/aws//ecs/${var.base_name}-ecs-cluster"
+  name              = "/aws/ecs/${var.base_name}-ecs-cluster"
   retention_in_days = 30
 }
-
-#         "logConfiguration": {
-#             "logDriver": "awslogs",
-#             "options": {
-#                 "awslogs-group": "${aws_cloudwatch_log_group.this.name}",
-#                 "awslogs-region": "${var.aws_region}",
-#                 "awslogs-stream-prefix": "${var.base_name}-ecs-service"
-#             }
-#         }
