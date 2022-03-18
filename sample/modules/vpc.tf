@@ -414,12 +414,12 @@ resource "aws_route_table_association" "s3_ecs_task_c" {
   route_table_id = aws_route_table.s3[0].id
 }
 resource "aws_route_table_association" "s3_vpc_endpoint_a" {
-  count          = var.vpc_endpoints == false ? 1 : 0
+  count          = var.vpc_endpoints == true ? 1 : 0
   subnet_id      = aws_subnet.vpc_endpoint_a[0].id
   route_table_id = aws_route_table.ecs_task_a[0].id
 }
 resource "aws_route_table_association" "s3_vpc_endpoint_c" {
-  count          = var.vpc_endpoints == false ? 1 : 0
+  count          = var.vpc_endpoints == true ? 1 : 0
   subnet_id      = aws_subnet.vpc_endpoint_c[0].id
   route_table_id = aws_route_table.ecs_task_c[0].id
 }
