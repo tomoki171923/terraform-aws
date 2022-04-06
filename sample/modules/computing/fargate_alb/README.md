@@ -1,4 +1,4 @@
-# Sample Computing　ECS Fargate on ALB
+# Sample Computing ECS Fargate on ALB
 
 Terraform Samples for ECS Fargate on ALB.
 
