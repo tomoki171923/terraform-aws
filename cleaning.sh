@@ -11,14 +11,15 @@ MODULES=(
     "elasticache"
     "kinesis/ap-northeast-1"
     "es/amazon-es"
-    # "lambda"
+    "lambda"
     "apigateway"
     "vpc"
-    # "ecr"
-    # "cloudfront/ap-northeast-1"
-    # "route53"
-    # "acm/ap-northeast-1"
-    # "acm/us-east-1"
+    "ecr"
+    "cloudfront/ap-northeast-1"
+    "acm/ap-northeast-1"
+    "acm/us-east-1"
+    "s3"
+    "route53"
 )
 
 # destroy all modules
